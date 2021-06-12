@@ -1,0 +1,51 @@
+version: '3.3'
+services:
+  flask:
+    build: 
+      context: src/auth/flask
+    ports:
+      - 5000:5000
+    depends_on: 
+      - db-auth
+      - redis-auth
+    volumes:
+      - ./src/auth/flask:/usr/src/flask
+    command: gunicorn main:app -w 2 --threads 2 -b 0.0.0.0:5000 --reload
+    networks:
+      - microservices
+  server-auth:
+    build:
+      context: src/auth/gRPC
+    env_file:
+      - ./src/auth/.env
+    depends_on:
+      - db-auth
+      - redis-auth
+    expose:
+      - 500051
+    networks:
+      - microservices
+  db-auth:
+    container_name: db-auth
+    image: postgres:12.0-alpine
+    env_file:
+      - ./src/auth/.env
+    ports: 
+      - 5433:5432
+    volumes:
+      - ./.pg-auth-data:/var/lib/postgresql/data/
+    networks:
+      - microservices
+    restart: always
+  redis-auth:
+    container_name: redis-auth
+    image: redis:6
+    restart: always
+    volumes:
+      - ./.redis-auth-data:/data
+    ports:
+      - 6380:6379
+    networks:
+      - microservices
+networks:
+    microservices:
