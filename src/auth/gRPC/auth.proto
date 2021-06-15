@@ -15,6 +15,21 @@ message LoginResponse {
     string token_type = 4;
 }
 
+message LoginViaGoogleRequest {
+    string access_token = 1;
+    string social_id = 2;
+    string social_name = 3;
+    string email = 4;
+    string user_agent = 5;
+}
+
+message LoginViaGoogleResponse {
+    string access_token = 1;
+    string refresh_token = 2;
+    string expires_in = 3;
+    string token_type = 4;
+}
+
 message RefreshTokenRequest {
     string refresh_token = 1;
     string user_agent = 2;
@@ -49,6 +64,7 @@ service Auth {
     rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse);
     rpc Logout (LogoutRequest) returns (LogoutResponse);
     rpc TestToken (TestTokenRequest) returns (TestTokenResponse);
+    rpc LoginViaGoogle (LoginViaGoogleRequest) returns (LoginViaGoogleResponse);
 }
 
 message UserCreateRequest {
