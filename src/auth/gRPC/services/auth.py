@@ -5,13 +5,15 @@ import crud
 import grpc
 from auth_pb2 import (LoginRequest, LoginResponse, LogoutResponse,
                       RefreshTokenRequest, RefreshTokenResponse,
-                      TestTokenRequest, TestTokenResponse)
+                      TestTokenRequest, TestTokenResponse, LoginViaGoogleRequest, LoginViaGoogleResponse)
 from db import no_sql_db as redis_method
 from db.db import get_db
 from jwt.exceptions import InvalidTokenError
 from user_agents import parse
 from utils.token import (check_expire, create_access_token,
                          create_refresh_token, decode_token)
+from loguru import logger
+from sqlalchemy.exc import IntegrityError
 
 
 class AuthService(auth_pb2_grpc.AuthServicer):
@@ -218,4 +220,93 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             payload['expire'], timezone.utc) - datetime.now(timezone.utc)
         redis_method.add_to_blacklist(access_token, exp=exp_for_black_list)
         response = LoginResponse()
+        return response
+
+    def LoginViaGoogle(self, request: LoginViaGoogleRequest, context):
+
+        if request.access_token is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('access_token field required!')
+            return LoginViaGoogleResponse()
+        if request.social_id is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('social_id field required!')
+            return LoginViaGoogleResponse()
+        if request.social_name is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('social_name field required!')
+            return LoginViaGoogleResponse()
+        if request.email is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('email field required!')
+            return LoginViaGoogleResponse()
+        if request.user_agent is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('user_agent field required!')
+            return LoginViaGoogleResponse()
+        db = next(get_db())
+
+        user_id = crud.socical_account.get_by_social_id(db=db, social_id=request.social_id,
+                                                        social_name=request.social_name)
+        if user_id:
+            user_id = user_id[0]
+            
+        if user_id is None:
+            try:
+                user = crud.user.create_social_account(
+                    db=db, email=request.email)
+                social = crud.socical_account.create(db=db, obj_in={
+                    'user_id': user.id,
+                    'social_id': request.social_id,
+                    'social_name': request.social_name
+                })
+                user_id = user.id
+            except IntegrityError as e:
+                logger.exception(e.orig.diag.message_detail)
+                context.set_code(grpc.StatusCode.ALREADY_EXISTS)
+                context.set_details(e.orig.diag.message_detail)
+                return LoginViaGoogleResponse()
+            except Exception as e:
+                logger.exception(e)
+                context.set_code(grpc.StatusCode.WARNING)
+                context.set_details()
+                return LoginViaGoogleResponse()
+        
+        user = crud.user.get_by(db=db, id=user_id)
+        payload = {
+                    'user_id': str(user.id),
+                    'agent': request.user_agent
+                }
+        refresh_delta = timedelta(days=7)
+
+        _, expire_access, access_token = create_access_token(payload=payload)
+        _, _, refresh_token = create_refresh_token(
+            payload=payload, time=refresh_delta)
+
+        user_agent = parse(request.user_agent)
+
+        if 'SMART' in request.user_agent:
+            device_type = 'smart'
+        elif user_agent.is_mobile:
+            device_type = 'mobile'
+
+        else:
+            device_type = 'web'
+
+        sign_in = {
+            'user_id': user.id,
+            'user_device_type': device_type,
+            'user_agent': request.user_agent,
+        }
+        crud.sign_in.create(db=db, obj_in=sign_in)
+
+        redis_method.add_refresh_token(
+            refresh_token=refresh_token, exp=refresh_delta)
+        redis_method.add_auth_user(user_id=str(user.id), user_agent=request.user_agent, refresh_token=refresh_token,
+                                   exp=refresh_delta)
+
+        response = LoginViaGoogleResponse(access_token=access_token, refresh_token=refresh_token,
+                                 expires_in=str(expire_access),
+                                 token_type='Bearer')
+
         return response

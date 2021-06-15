@@ -29,6 +29,13 @@ class CRUDUser(CRUDBase):
         db.refresh(db_obj)
         return db_obj
 
+    def create_social_account(self, db: Session, *, email: str) -> User:
+        db_obj = self.model(email=email)
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
     def update(
             self,
             db: Session,
