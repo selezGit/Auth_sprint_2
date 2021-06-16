@@ -3,9 +3,9 @@ import os
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String, Text
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 from .db import Base
 
@@ -32,8 +32,7 @@ class UserSignIn(Base):
         'listeners': [('after_create', create_partition)],
     }
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey(
-        'users.id'), primary_key=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), primary_key=True)
     logined_by = Column(DateTime, default=datetime.utcnow)
     user_agent = Column(Text)
     user_device_type = Column(String, primary_key=True)
@@ -49,8 +48,8 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    login = Column(String(30), unique=True, nullable=False)
-    password_hash = Column(String(100), nullable=False)
+    login = Column(String(30), unique=True, nullable=True)
+    password_hash = Column(String(100), nullable=True)
     email = Column(String(255), nullable=False, unique=True)
     admin = Column(Boolean, default=False)
 
@@ -65,6 +64,22 @@ class User(Base):
         self.email = email
         self.admin = admin
 
+
+
+class SocialAccount(Base):
+    __tablename__ = 'social_account'
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
+    user = relationship(User, backref=backref('social_accounts', lazy=True))
+
+    social_id = Column(Text, nullable=False)
+    social_name = Column(Text, nullable=False) # google
+
+    __table_args__ = (UniqueConstraint('social_id', 'social_name', name='social_pk'), )
+
+    def __repr__(self):
+        return f'<SocialAccount {self.social_name}:{self.user_id}>'
 
 class Role(db.Model):
     __tablename__ = 'roles'
