@@ -64,3 +64,16 @@ class User(Base):
         self.password_hash = password_hash
         self.email = email
         self.admin = admin
+
+
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+
+
+class UserRoles(db.Model):
+    __tablename__ = 'user_roles'
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), primary_key=True)
+    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
