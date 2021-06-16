@@ -224,10 +224,6 @@ class AuthService(auth_pb2_grpc.AuthServicer):
 
     def LoginViaGoogle(self, request: LoginViaGoogleRequest, context):
 
-        if request.access_token is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details('access_token field required!')
-            return LoginViaGoogleResponse()
         if request.social_id is None:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details('social_id field required!')

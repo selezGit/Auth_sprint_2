@@ -5,6 +5,7 @@ import grpc
 import app.api.v1.proto.auth_pb2 as auth__pb2
 
 
+
 class AuthStub(object):
     """Missing associated documentation comment in .proto file."""
 
@@ -33,6 +34,11 @@ class AuthStub(object):
                 '/Auth/TestToken',
                 request_serializer=auth__pb2.TestTokenRequest.SerializeToString,
                 response_deserializer=auth__pb2.TestTokenResponse.FromString,
+                )
+        self.LoginViaGoogle = channel.unary_unary(
+                '/Auth/LoginViaGoogle',
+                request_serializer=auth__pb2.LoginViaGoogleRequest.SerializeToString,
+                response_deserializer=auth__pb2.LoginViaGoogleResponse.FromString,
                 )
 
 
@@ -63,6 +69,12 @@ class AuthServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def LoginViaGoogle(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_AuthServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -85,6 +97,11 @@ def add_AuthServicer_to_server(servicer, server):
                     servicer.TestToken,
                     request_deserializer=auth__pb2.TestTokenRequest.FromString,
                     response_serializer=auth__pb2.TestTokenResponse.SerializeToString,
+            ),
+            'LoginViaGoogle': grpc.unary_unary_rpc_method_handler(
+                    servicer.LoginViaGoogle,
+                    request_deserializer=auth__pb2.LoginViaGoogleRequest.FromString,
+                    response_serializer=auth__pb2.LoginViaGoogleResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -161,6 +178,23 @@ class Auth(object):
         return grpc.experimental.unary_unary(request, target, '/Auth/TestToken',
             auth__pb2.TestTokenRequest.SerializeToString,
             auth__pb2.TestTokenResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def LoginViaGoogle(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Auth/LoginViaGoogle',
+            auth__pb2.LoginViaGoogleRequest.SerializeToString,
+            auth__pb2.LoginViaGoogleResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
