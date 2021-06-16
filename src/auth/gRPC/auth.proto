@@ -16,11 +16,10 @@ message LoginResponse {
 }
 
 message LoginViaGoogleRequest {
-    string access_token = 1;
-    string social_id = 2;
-    string social_name = 3;
-    string email = 4;
-    string user_agent = 5;
+    string social_id = 1;
+    string social_name = 2;
+    string email = 3;
+    string user_agent = 4;
 }
 
 message LoginViaGoogleResponse {

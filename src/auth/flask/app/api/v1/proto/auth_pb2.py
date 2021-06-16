@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\nauth.proto\"C\n\x0cLoginRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x12\n\nuser_agent\x18\x03 \x01(\t\"d\n\rLoginResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"@\n\x13RefreshTokenRequest\x12\x15\n\rrefresh_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"k\n\x14RefreshTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"9\n\rLogoutRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x10\n\x0eLogoutResponse\"<\n\x10TestTokenRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x13\n\x11TestTokenResponse\"C\n\x11UserCreateRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\"8\n\x0cUserResponse\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05login\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\":\n\x0eUserGetRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"[\n\x12UserGetListRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0c\n\x04skip\x18\x03 \x01(\x05\x12\r\n\x05limit\x18\x04 \x01(\x05\"P\n\x13UserGetListResponse\x12\x0c\n\x04skip\x18\x01 \x01(\x05\x12\r\n\x05limit\x18\x02 \x01(\x05\x12\x1c\n\x05users\x18\x03 \x03(\x0b\x32\r.UserResponse\"c\n\x16UserUpdateEmailRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\r\n\x05\x65mail\x18\x04 \x01(\t\"J\n\x0cUserDeleteMe\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"q\n\x19UserUpdatePasswordRequest\x12\x14\n\x0cold_password\x18\x01 \x01(\t\x12\x14\n\x0cnew_password\x18\x02 \x01(\t\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x03 \x01(\t\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"T\n\x0bUserHistory\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65vice_type\x18\x03 \x01(\t\x12\x0e\n\x06\x61\x63tive\x18\x04 \x01(\x08\"[\n\x12UserHistoryRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0c\n\x04skip\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"1\n\x13UserHistoryResponse\x12\x1a\n\x04rows\x18\x02 \x03(\x0b\x32\x0c.UserHistory2\xca\x01\n\x04\x41uth\x12&\n\x05Login\x12\r.LoginRequest\x1a\x0e.LoginResponse\x12;\n\x0cRefreshToken\x12\x14.RefreshTokenRequest\x1a\x15.RefreshTokenResponse\x12)\n\x06Logout\x12\x0e.LogoutRequest\x1a\x0f.LogoutResponse\x12\x32\n\tTestToken\x12\x11.TestTokenRequest\x1a\x12.TestTokenResponse2\xe7\x02\n\x04User\x12%\n\x03Get\x12\x0f.UserGetRequest\x1a\r.UserResponse\x12\x34\n\x07GetList\x12\x13.UserGetListRequest\x1a\x14.UserGetListResponse\x12\x37\n\nGetHistory\x12\x13.UserHistoryRequest\x1a\x14.UserHistoryResponse\x12+\n\x06\x43reate\x12\x12.UserCreateRequest\x1a\r.UserResponse\x12\x35\n\x0bUpdateEmail\x12\x17.UserUpdateEmailRequest\x1a\r.UserResponse\x12;\n\x0eUpdatePassword\x12\x1a.UserUpdatePasswordRequest\x1a\r.UserResponse\x12(\n\x08\x44\x65leteMe\x12\r.UserDeleteMe\x1a\r.UserResponseb\x06proto3'
+  serialized_pb=b'\n\nauth.proto\"C\n\x0cLoginRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x12\n\nuser_agent\x18\x03 \x01(\t\"d\n\rLoginResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"b\n\x15LoginViaGoogleRequest\x12\x11\n\tsocial_id\x18\x01 \x01(\t\x12\x13\n\x0bsocial_name\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"m\n\x16LoginViaGoogleResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"@\n\x13RefreshTokenRequest\x12\x15\n\rrefresh_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"k\n\x14RefreshTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"9\n\rLogoutRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x10\n\x0eLogoutResponse\"<\n\x10TestTokenRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x13\n\x11TestTokenResponse\"C\n\x11UserCreateRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\"8\n\x0cUserResponse\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05login\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\":\n\x0eUserGetRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"[\n\x12UserGetListRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0c\n\x04skip\x18\x03 \x01(\x05\x12\r\n\x05limit\x18\x04 \x01(\x05\"P\n\x13UserGetListResponse\x12\x0c\n\x04skip\x18\x01 \x01(\x05\x12\r\n\x05limit\x18\x02 \x01(\x05\x12\x1c\n\x05users\x18\x03 \x03(\x0b\x32\r.UserResponse\"c\n\x16UserUpdateEmailRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\r\n\x05\x65mail\x18\x04 \x01(\t\"J\n\x0cUserDeleteMe\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"q\n\x19UserUpdatePasswordRequest\x12\x14\n\x0cold_password\x18\x01 \x01(\t\x12\x14\n\x0cnew_password\x18\x02 \x01(\t\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x03 \x01(\t\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"T\n\x0bUserHistory\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65vice_type\x18\x03 \x01(\t\x12\x0e\n\x06\x61\x63tive\x18\x04 \x01(\x08\"[\n\x12UserHistoryRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0c\n\x04skip\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"1\n\x13UserHistoryResponse\x12\x1a\n\x04rows\x18\x02 \x03(\x0b\x32\x0c.UserHistory2\x8d\x02\n\x04\x41uth\x12&\n\x05Login\x12\r.LoginRequest\x1a\x0e.LoginResponse\x12;\n\x0cRefreshToken\x12\x14.RefreshTokenRequest\x1a\x15.RefreshTokenResponse\x12)\n\x06Logout\x12\x0e.LogoutRequest\x1a\x0f.LogoutResponse\x12\x32\n\tTestToken\x12\x11.TestTokenRequest\x1a\x12.TestTokenResponse\x12\x41\n\x0eLoginViaGoogle\x12\x16.LoginViaGoogleRequest\x1a\x17.LoginViaGoogleResponse2\xe7\x02\n\x04User\x12%\n\x03Get\x12\x0f.UserGetRequest\x1a\r.UserResponse\x12\x34\n\x07GetList\x12\x13.UserGetListRequest\x1a\x14.UserGetListResponse\x12\x37\n\nGetHistory\x12\x13.UserHistoryRequest\x1a\x14.UserHistoryResponse\x12+\n\x06\x43reate\x12\x12.UserCreateRequest\x1a\r.UserResponse\x12\x35\n\x0bUpdateEmail\x12\x17.UserUpdateEmailRequest\x1a\r.UserResponse\x12;\n\x0eUpdatePassword\x12\x1a.UserUpdatePasswordRequest\x1a\r.UserResponse\x12(\n\x08\x44\x65leteMe\x12\r.UserDeleteMe\x1a\r.UserResponseb\x06proto3'
 )
 
 
@@ -124,6 +124,112 @@ _LOGINRESPONSE = _descriptor.Descriptor(
 )
 
 
+_LOGINVIAGOOGLEREQUEST = _descriptor.Descriptor(
+  name='LoginViaGoogleRequest',
+  full_name='LoginViaGoogleRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='social_id', full_name='LoginViaGoogleRequest.social_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='social_name', full_name='LoginViaGoogleRequest.social_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='email', full_name='LoginViaGoogleRequest.email', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='LoginViaGoogleRequest.user_agent', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=185,
+  serialized_end=283,
+)
+
+
+_LOGINVIAGOOGLERESPONSE = _descriptor.Descriptor(
+  name='LoginViaGoogleResponse',
+  full_name='LoginViaGoogleResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='access_token', full_name='LoginViaGoogleResponse.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='refresh_token', full_name='LoginViaGoogleResponse.refresh_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='expires_in', full_name='LoginViaGoogleResponse.expires_in', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='token_type', full_name='LoginViaGoogleResponse.token_type', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=285,
+  serialized_end=394,
+)
+
+
 _REFRESHTOKENREQUEST = _descriptor.Descriptor(
   name='RefreshTokenRequest',
   full_name='RefreshTokenRequest',
@@ -158,8 +264,8 @@ _REFRESHTOKENREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=185,
-  serialized_end=249,
+  serialized_start=396,
+  serialized_end=460,
 )
 
 
@@ -211,8 +317,8 @@ _REFRESHTOKENRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=251,
-  serialized_end=358,
+  serialized_start=462,
+  serialized_end=569,
 )
 
 
@@ -250,8 +356,8 @@ _LOGOUTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=360,
-  serialized_end=417,
+  serialized_start=571,
+  serialized_end=628,
 )
 
 
@@ -275,8 +381,8 @@ _LOGOUTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=419,
-  serialized_end=435,
+  serialized_start=630,
+  serialized_end=646,
 )
 
 
@@ -314,8 +420,8 @@ _TESTTOKENREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=437,
-  serialized_end=497,
+  serialized_start=648,
+  serialized_end=708,
 )
 
 
@@ -339,8 +445,8 @@ _TESTTOKENRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=499,
-  serialized_end=518,
+  serialized_start=710,
+  serialized_end=729,
 )
 
 
@@ -385,8 +491,8 @@ _USERCREATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=520,
-  serialized_end=587,
+  serialized_start=731,
+  serialized_end=798,
 )
 
 
@@ -431,8 +537,8 @@ _USERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=589,
-  serialized_end=645,
+  serialized_start=800,
+  serialized_end=856,
 )
 
 
@@ -470,8 +576,8 @@ _USERGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=647,
-  serialized_end=705,
+  serialized_start=858,
+  serialized_end=916,
 )
 
 
@@ -523,8 +629,8 @@ _USERGETLISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=707,
-  serialized_end=798,
+  serialized_start=918,
+  serialized_end=1009,
 )
 
 
@@ -569,8 +675,8 @@ _USERGETLISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=800,
-  serialized_end=880,
+  serialized_start=1011,
+  serialized_end=1091,
 )
 
 
@@ -622,8 +728,8 @@ _USERUPDATEEMAILREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=882,
-  serialized_end=981,
+  serialized_start=1093,
+  serialized_end=1192,
 )
 
 
@@ -668,8 +774,8 @@ _USERDELETEME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=983,
-  serialized_end=1057,
+  serialized_start=1194,
+  serialized_end=1268,
 )
 
 
@@ -721,8 +827,8 @@ _USERUPDATEPASSWORDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1059,
-  serialized_end=1172,
+  serialized_start=1270,
+  serialized_end=1383,
 )
 
 
@@ -774,8 +880,8 @@ _USERHISTORY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1174,
-  serialized_end=1258,
+  serialized_start=1385,
+  serialized_end=1469,
 )
 
 
@@ -827,8 +933,8 @@ _USERHISTORYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1260,
-  serialized_end=1351,
+  serialized_start=1471,
+  serialized_end=1562,
 )
 
 
@@ -859,14 +965,16 @@ _USERHISTORYRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1353,
-  serialized_end=1402,
+  serialized_start=1564,
+  serialized_end=1613,
 )
 
 _USERGETLISTRESPONSE.fields_by_name['users'].message_type = _USERRESPONSE
 _USERHISTORYRESPONSE.fields_by_name['rows'].message_type = _USERHISTORY
 DESCRIPTOR.message_types_by_name['LoginRequest'] = _LOGINREQUEST
 DESCRIPTOR.message_types_by_name['LoginResponse'] = _LOGINRESPONSE
+DESCRIPTOR.message_types_by_name['LoginViaGoogleRequest'] = _LOGINVIAGOOGLEREQUEST
+DESCRIPTOR.message_types_by_name['LoginViaGoogleResponse'] = _LOGINVIAGOOGLERESPONSE
 DESCRIPTOR.message_types_by_name['RefreshTokenRequest'] = _REFRESHTOKENREQUEST
 DESCRIPTOR.message_types_by_name['RefreshTokenResponse'] = _REFRESHTOKENRESPONSE
 DESCRIPTOR.message_types_by_name['LogoutRequest'] = _LOGOUTREQUEST
@@ -899,6 +1007,20 @@ LoginResponse = _reflection.GeneratedProtocolMessageType('LoginResponse', (_mess
   # @@protoc_insertion_point(class_scope:LoginResponse)
   })
 _sym_db.RegisterMessage(LoginResponse)
+
+LoginViaGoogleRequest = _reflection.GeneratedProtocolMessageType('LoginViaGoogleRequest', (_message.Message,), {
+  'DESCRIPTOR' : _LOGINVIAGOOGLEREQUEST,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:LoginViaGoogleRequest)
+  })
+_sym_db.RegisterMessage(LoginViaGoogleRequest)
+
+LoginViaGoogleResponse = _reflection.GeneratedProtocolMessageType('LoginViaGoogleResponse', (_message.Message,), {
+  'DESCRIPTOR' : _LOGINVIAGOOGLERESPONSE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:LoginViaGoogleResponse)
+  })
+_sym_db.RegisterMessage(LoginViaGoogleResponse)
 
 RefreshTokenRequest = _reflection.GeneratedProtocolMessageType('RefreshTokenRequest', (_message.Message,), {
   'DESCRIPTOR' : _REFRESHTOKENREQUEST,
@@ -1028,8 +1150,8 @@ _AUTH = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1405,
-  serialized_end=1607,
+  serialized_start=1616,
+  serialized_end=1885,
   methods=[
   _descriptor.MethodDescriptor(
     name='Login',
@@ -1071,6 +1193,16 @@ _AUTH = _descriptor.ServiceDescriptor(
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
+  _descriptor.MethodDescriptor(
+    name='LoginViaGoogle',
+    full_name='Auth.LoginViaGoogle',
+    index=4,
+    containing_service=None,
+    input_type=_LOGINVIAGOOGLEREQUEST,
+    output_type=_LOGINVIAGOOGLERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
 ])
 _sym_db.RegisterServiceDescriptor(_AUTH)
 
@@ -1084,8 +1216,8 @@ _USER = _descriptor.ServiceDescriptor(
   index=1,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1610,
-  serialized_end=1969,
+  serialized_start=1888,
+  serialized_end=2247,
   methods=[
   _descriptor.MethodDescriptor(
     name='Get',
