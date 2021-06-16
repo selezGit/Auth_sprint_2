@@ -1,6 +1,5 @@
 from db.db_models import SocialAccount
 from sqlalchemy.orm import Session
-from typing import Dict
 from crud.base import CRUDBase
 
 
@@ -12,5 +11,7 @@ class CRUDSocialAccount(CRUDBase):
         return db.query(SocialAccount.user_id).filter(SocialAccount.social_id == social_id,
                                                       SocialAccount.social_name == social_name).first()
 
+    def get_count_social_ids(self, db: Session, uuid: str) -> int:
+        return db.query(SocialAccount).filter(SocialAccount.id==uuid).count()
 
-socical_account = CRUDSocialAccount()
+social_account = CRUDSocialAccount()

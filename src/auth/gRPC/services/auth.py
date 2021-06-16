@@ -242,7 +242,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             return LoginViaGoogleResponse()
         db = next(get_db())
 
-        user_id = crud.socical_account.get_by_social_id(db=db, social_id=request.social_id,
+        user_id = crud.social_account.get_by_social_id(db=db, social_id=request.social_id,
                                                         social_name=request.social_name)
         if user_id:
             user_id = user_id[0]
@@ -251,7 +251,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             try:
                 user = crud.user.create_social_account(
                     db=db, email=request.email)
-                social = crud.socical_account.create(db=db, obj_in={
+                social = crud.social_account.create(db=db, obj_in={
                     'user_id': user.id,
                     'social_id': request.social_id,
                     'social_name': request.social_name

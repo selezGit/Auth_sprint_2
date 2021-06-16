@@ -6,7 +6,8 @@ import grpc
 from auth_pb2 import (UserCreateRequest, UserDeleteMe, UserGetRequest,
                       UserHistory, UserHistoryRequest, UserHistoryResponse,
                       UserResponse, UserUpdateEmailRequest,
-                      UserUpdatePasswordRequest)
+                      UserUpdatePasswordRequest, UserDeleteSN, UserDeleteSNResponse)
+from crud import social_account
 from db import no_sql_db as redis_method
 from db.db import get_db
 from jwt.exceptions import InvalidTokenError
@@ -326,3 +327,54 @@ class UserService(auth_pb2_grpc.UserServicer):
         redis_method.del_all_auth_user(payload['user_id'])
         crud.user.remove(db=db, db_obj=user)
         return UserResponse()
+
+    def DeleteSN(self, request: UserDeleteSN, context):
+        access_token = request.access_token
+        user_agent = request.user_agent
+        social_uuid = request.uuid
+        if access_token is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('access_token field required!')
+            return UserDeleteSNResponse()
+        if user_agent is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('user_agent field required!')
+            return UserDeleteSNResponse()
+        if social_uuid is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('uuid field required!')
+            return UserDeleteSNResponse()
+
+        try:
+            payload = decode_token(token=access_token)
+
+        except InvalidTokenError as e:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserDeleteSNResponse()
+        if redis_method.check_blacklist(access_token):
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserDeleteSNResponse()
+        if not check_expire(payload['expire']):
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserDeleteSNResponse()
+        if user_agent != payload['agent']:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('user_agent not valid for this token!')
+            return UserDeleteSNResponse()
+        db = next(get_db())
+        
+        social_accounts_count = crud.social_account.get_count_social_ids(db=db, uuid=social_uuid)
+        if social_accounts_count == 0:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('incorrect uuid, social network not found')
+            return UserDeleteSNResponse()
+        elif social_accounts_count == 1:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('to unlink social network, you need more than one SN')
+            return UserDeleteSNResponse()
+        
+        crud.social_account.remove(db=db, db_obj=crud.social_account.get_by(db=db, id=social_uuid))
+        return UserDeleteSNResponse()

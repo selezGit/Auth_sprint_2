@@ -21,3 +21,6 @@ change_email_parser.add_argument(name='password', type=str, location='form', req
 
 delete_me_parser = RequestParser(bundle_errors=True)
 delete_me_parser.add_argument(name='password', type=str, location='form', required=True, nullable=False)
+
+delete_sn_parser = RequestParser(bundle_errors=True)
+delete_sn_parser.add_argument(name='uuid', type=str, location='form', required=True, nullable=False, help='uuid социальной сети')

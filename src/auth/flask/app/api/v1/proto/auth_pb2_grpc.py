@@ -243,6 +243,11 @@ class UserStub(object):
                 request_serializer=auth__pb2.UserDeleteMe.SerializeToString,
                 response_deserializer=auth__pb2.UserResponse.FromString,
                 )
+        self.DeleteSN = channel.unary_unary(
+                '/User/DeleteSN',
+                request_serializer=auth__pb2.UserDeleteSN.SerializeToString,
+                response_deserializer=auth__pb2.UserDeleteSNResponse.FromString,
+                )
 
 
 class UserServicer(object):
@@ -290,6 +295,12 @@ class UserServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DeleteSN(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_UserServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -327,6 +338,11 @@ def add_UserServicer_to_server(servicer, server):
                     servicer.DeleteMe,
                     request_deserializer=auth__pb2.UserDeleteMe.FromString,
                     response_serializer=auth__pb2.UserResponse.SerializeToString,
+            ),
+            'DeleteSN': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteSN,
+                    request_deserializer=auth__pb2.UserDeleteSN.FromString,
+                    response_serializer=auth__pb2.UserDeleteSNResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -454,5 +470,22 @@ class User(object):
         return grpc.experimental.unary_unary(request, target, '/User/DeleteMe',
             auth__pb2.UserDeleteMe.SerializeToString,
             auth__pb2.UserResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def DeleteSN(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/User/DeleteSN',
+            auth__pb2.UserDeleteSN.SerializeToString,
+            auth__pb2.UserDeleteSNResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
