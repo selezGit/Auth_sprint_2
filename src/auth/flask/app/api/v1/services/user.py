@@ -1,10 +1,13 @@
 from http import HTTPStatus
 
+from google.protobuf import message
+
 from app.api.v1.exceptions import error_handler
 from app.api.v1.proto.auth_pb2 import (UserCreateRequest, UserDeleteMe,
                                        UserGetRequest, UserHistoryRequest,
                                        UserUpdateEmailRequest,
-                                       UserUpdatePasswordRequest)
+                                       UserUpdatePasswordRequest,
+                                       UserDeleteSN)
 from app.api.v1.proto.connector import ConnectServerGRPC
 from flask import jsonify
 from google.protobuf.json_format import MessageToDict
@@ -29,6 +32,15 @@ def delete_user_logic(access_token: str, user_agent: str, password: str):
                                     password=password)
     client.DeleteMe(delete_user_data)
     return jsonify(message='user successfully deleted')
+
+
+@error_handler
+def delete_sn_logic(uuid: str, user_agent: str, access_token: str):
+    delete_sn_data = UserDeleteSN(uuid=uuid,
+                                  user_agent=user_agent,
+                                  access_token=access_token)
+    client.DeleteSN(delete_sn_data)
+    return jsonify(message='social network successfully deleted')
 
 
 @error_handler

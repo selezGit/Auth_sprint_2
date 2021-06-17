@@ -3,14 +3,16 @@ from http import HTTPStatus
 from app.api.v1.models.request_model import (auth_register_parser,
                                              change_email_parser,
                                              change_password_parser,
-                                             delete_me_parser)
+                                             delete_me_parser,
+                                             delete_sn_parser)
 from app.api.v1.models.response_model import (nested_history_model,
                                               user_create_model,
                                               user_history_model)
 from app.api.v1.services.user import (change_email_logic,
                                       change_password_logic, create_user_logic,
                                       delete_user_logic, get_user_logic,
-                                      history_logic)
+                                      history_logic,
+                                      delete_sn_logic)
 from flask import request
 from flask.json import jsonify
 from flask_restx import Namespace, Resource
@@ -54,12 +56,18 @@ class User(Resource):
 @user_ns.route('/delete_SN', endpoint='user_delete_SN')
 class DeleteSN(Resource):
     @user_ns.doc(security='access_token')
+    @user_ns.expect(delete_sn_parser)
     @user_ns.response(int(HTTPStatus.OK), 'Success')
+    @user_ns.response(int(HTTPStatus.BAD_REQUEST), 'Validation error.')
     @user_ns.response(int(HTTPStatus.UNAUTHORIZED), 'Token is invalid or expired.')
     @user_ns.response(int(HTTPStatus.TOO_MANY_REQUESTS), 'Too many requests')
     @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
-    def post(self):
-        return jsonify(hello='world')
+    def delete(self):
+        request_data = delete_sn_parser.parse_args()
+        uuid = request_data.get('uuid')
+        access_token = request.headers.get('Authorization')
+        user_agent = request.headers.get('User-Agent')
+        return delete_sn_logic(uuid=uuid, user_agent=user_agent, access_token=access_token)
 
 
 @user_ns.route('/me', endpoint='user_me')

@@ -109,6 +109,17 @@ message UserDeleteMe {
     string password = 3;
 }
 
+message UserDeleteSN {
+    string access_token = 1;
+    string user_agent = 2;
+    string uuid = 3;
+}
+
+
+message UserDeleteSNResponse{
+}
+
+
 message UserUpdatePasswordRequest {
     string old_password = 1;
     string new_password = 2;
@@ -147,4 +158,5 @@ service User {
     rpc UpdateEmail (UserUpdateEmailRequest) returns (UserResponse);
     rpc UpdatePassword (UserUpdatePasswordRequest) returns (UserResponse);
     rpc DeleteMe (UserDeleteMe) returns (UserResponse);
+    rpc DeleteSN (UserDeleteSN) returns (UserDeleteSNResponse);
 }
