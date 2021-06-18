@@ -59,7 +59,7 @@ class User(Base):
     admin = Column(Boolean, default=False)
 
     users_sign_in = relationship('UserSignIn', cascade='all,delete')
-    social_account = relationship('SocialAccount', cascade='all,delete')
+    social_account = relationship('SocialAccount', cascade='all,delete', lazy='joined')
     roles = relationship('Role', cascade='all,delete', secondary=UserRoles, lazy='joined')
 
     def __repr__(self):
