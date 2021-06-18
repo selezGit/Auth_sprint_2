@@ -85,7 +85,10 @@ class UserService(auth_pb2_grpc.UserServicer):
             context.set_details('user_agent not valid for this token!')
             return UserResponse()
         user = crud.user.get_by(db=db, id=payload['user_id'])
-        return UserResponse(id=str(user.id), login=user.login, email=user.email)
+        user_socials = crud.social_account.get_social(
+            db=db, user_id=payload['user_id'])
+        return UserResponse(id=str(user.id), login=user.login, email=user.email,
+                            social_networks=[{'id': str(social.id), 'social_name': social.social_name} for social in user_socials])
 
     def GetHistory(self, request: UserHistoryRequest, context):
         db = next(get_db())
@@ -357,7 +360,6 @@ class UserService(auth_pb2_grpc.UserServicer):
             db=db, user_id=payload['user_id'])
         user = crud.user.get_by(db=db, id=payload['user_id'])
 
-        
         if social_accounts_count == 0:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details('incorrect uuid, social network not found')
