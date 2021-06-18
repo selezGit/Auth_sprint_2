@@ -27,10 +27,9 @@ def create_user_logic(login: str, email: str, password: str):
 
 
 @error_handler
-def delete_user_logic(access_token: str, user_agent: str, password: str):
+def delete_user_logic(access_token: str, user_agent: str):
     delete_user_data = UserDeleteMe(access_token=access_token,
-                                    user_agent=user_agent,
-                                    password=password)
+                                    user_agent=user_agent)
     client.DeleteMe(delete_user_data)
     return jsonify(message='user successfully deleted')
 
@@ -72,14 +71,14 @@ def change_password_logic(old_password: str, new_password: str,
 
 
 @error_handler
-def change_email_logic(password: str, email: str,
+def change_email_logic(email: str,
                        access_token: str, user_agent: str):
     upate_email_data = UserUpdateEmailRequest(access_token=access_token,
                                               user_agent=user_agent,
-                                              password=password,
                                               email=email)
     client.UpdateEmail(upate_email_data)
     return jsonify(status='Success')
+
 
 @error_handler
 def append_google_SN_logic(access_token: str, user_agent: str,

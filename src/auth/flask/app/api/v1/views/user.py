@@ -4,7 +4,6 @@ from app import google
 from app.api.v1.models.request_model import (auth_register_parser,
                                              change_email_parser,
                                              change_password_parser,
-                                             delete_me_parser,
                                              delete_sn_parser)
 from app.api.v1.models.response_model import (nested_history_model,
                                               user_create_model,
@@ -39,18 +38,14 @@ class User(Resource):
         return create_user_logic(login=login, email=email, password=password)
 
     @user_ns.doc(security='access_token')
-    @user_ns.expect(delete_me_parser)
     @user_ns.response(int(HTTPStatus.OK), 'Success')
-    @user_ns.response(int(HTTPStatus.BAD_REQUEST), 'Validation error.')
     @user_ns.response(int(HTTPStatus.UNAUTHORIZED), 'Token is invalid or expired.')
     @user_ns.response(int(HTTPStatus.TOO_MANY_REQUESTS), 'Too many requests')
     @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
     def delete(self):
-        request_data = delete_me_parser.parse_args()
-        password = request_data.get('password')
         access_token = request.headers.get('Authorization')
         user_agent = request.headers.get('User-Agent')
-        return delete_user_logic(access_token=access_token, user_agent=user_agent, password=password)
+        return delete_user_logic(access_token=access_token, user_agent=user_agent)
 
 
 @user_ns.route('/delete_SN', endpoint='user_delete_SN')
@@ -143,12 +138,10 @@ class ChangeEmail(Resource):
     @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
     def patch(self):
         request_data = change_email_parser.parse_args()
-        password = request_data.get('password')
         email = request_data.get('email')
         access_token = request.headers.get('Authorization')
         user_agent = request.headers.get('User-Agent')
-        return change_email_logic(password=password,
-                                  email=email,
+        return change_email_logic(email=email,
                                   access_token=access_token,
                                   user_agent=user_agent)
 

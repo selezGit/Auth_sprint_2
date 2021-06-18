@@ -54,6 +54,7 @@ class User(Base):
     admin = Column(Boolean, default=False)
 
     users_sign_in = relationship('UserSignIn', cascade='all,delete')
+    social_account = relationship('SocialAccount', cascade='all,delete')
 
     def __repr__(self):
         return f'<User {self.login}, ID: {self.id}, admin={self.admin}>'
@@ -70,7 +71,7 @@ class SocialAccount(Base):
     __tablename__ = 'social_account'
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), primary_key=True)
     user = relationship(User, backref=backref('social_accounts', lazy=True))
 
     social_id = Column(Text, nullable=False)

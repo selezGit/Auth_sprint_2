@@ -99,14 +99,12 @@ message UserGetListResponse {
 message UserUpdateEmailRequest {
     string access_token = 1;
     string user_agent = 2;
-    string password = 3;
     string email = 4;
 }
 
 message UserDeleteMe {
     string access_token = 1;
     string user_agent = 2;
-    string password = 3;
 }
 
 message UserDeleteSN {
