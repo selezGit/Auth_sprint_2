@@ -19,7 +19,7 @@ class FilmService(BaseService):
         self.cache = cache
         self.storage = storage
 
-    async def get_by_id(self, url: str, id: str, adult_content: bool) -> Optional[Dict]:
+    async def get_by_id(self, url: str, id: str) -> Optional[Dict]:
         """Функция получения фильма по id"""
         data = await self.cache.check_cache(url)
         if not data:
@@ -53,6 +53,7 @@ class FilmService(BaseService):
         order: str,
         page: int,
         size: int,
+        is_premium: bool,
         adult_content: bool,
         genre: str = None,
         query: str = None,
@@ -61,7 +62,13 @@ class FilmService(BaseService):
         data = await self.cache.check_cache(url)
         if not data:
             data = await self.storage.get_multi(
-                page=page, size=size, order=order, genre=genre, q=query, adult_content=adult_content
+                page=page,
+                size=size,
+                order=order,
+                genre=genre,
+                q=query,
+                is_premium=is_premium,
+                adult_content=adult_content
             )
             if data:
                 await self.cache.load_cache(url, data)

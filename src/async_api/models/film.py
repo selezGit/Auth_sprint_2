@@ -21,8 +21,12 @@ class Film(Base):
     writers: List[Person] = []
     genres: List[Genre] = []
     file_path: Optional[str] = ''
+    is_adult: bool = False
+    is_premium: bool = False
 
 
 class FilmShort(Base):
     title: str
     imdb_rating: Optional[float] = 0
+    is_adult: bool = False
+    is_premium: bool = False

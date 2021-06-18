@@ -5,3 +5,4 @@ from models.base import Base
 class Genre(Base):
     name: str
     description: Optional[str] = ''
+    is_adult: bool = False
