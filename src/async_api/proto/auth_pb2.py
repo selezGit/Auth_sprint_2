@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\nauth.proto\"C\n\x0cLoginRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x12\n\nuser_agent\x18\x03 \x01(\t\"d\n\rLoginResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"@\n\x13RefreshTokenRequest\x12\x15\n\rrefresh_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"k\n\x14RefreshTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"9\n\rLogoutRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x10\n\x0eLogoutResponse\"<\n\x10TestTokenRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x13\n\x11TestTokenResponse\"C\n\x11UserCreateRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\"8\n\x0cUserResponse\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05login\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\":\n\x0eUserGetRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"[\n\x12UserGetListRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0c\n\x04skip\x18\x03 \x01(\x05\x12\r\n\x05limit\x18\x04 \x01(\x05\"P\n\x13UserGetListResponse\x12\x0c\n\x04skip\x18\x01 \x01(\x05\x12\r\n\x05limit\x18\x02 \x01(\x05\x12\x1c\n\x05users\x18\x03 \x03(\x0b\x32\r.UserResponse\"c\n\x16UserUpdateEmailRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\r\n\x05\x65mail\x18\x04 \x01(\t\"J\n\x0cUserDeleteMe\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"q\n\x19UserUpdatePasswordRequest\x12\x14\n\x0cold_password\x18\x01 \x01(\t\x12\x14\n\x0cnew_password\x18\x02 \x01(\t\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x03 \x01(\t\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"T\n\x0bUserHistory\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65vice_type\x18\x03 \x01(\t\x12\x0e\n\x06\x61\x63tive\x18\x04 \x01(\x08\"[\n\x12UserHistoryRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0c\n\x04skip\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"1\n\x13UserHistoryResponse\x12\x1a\n\x04rows\x18\x02 \x03(\x0b\x32\x0c.UserHistory2\xca\x01\n\x04\x41uth\x12&\n\x05Login\x12\r.LoginRequest\x1a\x0e.LoginResponse\x12;\n\x0cRefreshToken\x12\x14.RefreshTokenRequest\x1a\x15.RefreshTokenResponse\x12)\n\x06Logout\x12\x0e.LogoutRequest\x1a\x0f.LogoutResponse\x12\x32\n\tTestToken\x12\x11.TestTokenRequest\x1a\x12.TestTokenResponse2\xe7\x02\n\x04User\x12%\n\x03Get\x12\x0f.UserGetRequest\x1a\r.UserResponse\x12\x34\n\x07GetList\x12\x13.UserGetListRequest\x1a\x14.UserGetListResponse\x12\x37\n\nGetHistory\x12\x13.UserHistoryRequest\x1a\x14.UserHistoryResponse\x12+\n\x06\x43reate\x12\x12.UserCreateRequest\x1a\r.UserResponse\x12\x35\n\x0bUpdateEmail\x12\x17.UserUpdateEmailRequest\x1a\r.UserResponse\x12;\n\x0eUpdatePassword\x12\x1a.UserUpdatePasswordRequest\x1a\r.UserResponse\x12(\n\x08\x44\x65leteMe\x12\r.UserDeleteMe\x1a\r.UserResponseb\x06proto3'
+  serialized_pb=b'\n\nauth.proto\"C\n\x0cLoginRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x12\n\nuser_agent\x18\x03 \x01(\t\"d\n\rLoginResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"b\n\x15LoginViaGoogleRequest\x12\x11\n\tsocial_id\x18\x01 \x01(\t\x12\x13\n\x0bsocial_name\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"m\n\x16LoginViaGoogleResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"@\n\x13RefreshTokenRequest\x12\x15\n\rrefresh_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"k\n\x14RefreshTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"9\n\rLogoutRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x10\n\x0eLogoutResponse\"<\n\x10TestTokenRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x13\n\x11TestTokenResponse\"C\n\x11UserCreateRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\"@\n\x0eSocialResponse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x13\n\x0bsocial_name\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\"\x80\x01\n\x0cUserResponse\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05login\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x1c\n\x05roles\x18\x04 \x03(\x0b\x32\r.RoleResponse\x12(\n\x0fsocial_networks\x18\x05 \x03(\x0b\x32\x0f.SocialResponse\":\n\x0eUserGetRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"[\n\x12UserGetListRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0c\n\x04skip\x18\x03 \x01(\x05\x12\r\n\x05limit\x18\x04 \x01(\x05\"P\n\x13UserGetListResponse\x12\x0c\n\x04skip\x18\x01 \x01(\x05\x12\r\n\x05limit\x18\x02 \x01(\x05\x12\x1c\n\x05users\x18\x03 \x03(\x0b\x32\r.UserResponse\"Q\n\x16UserUpdateEmailRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x04 \x01(\t\"8\n\x0cUserDeleteMe\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"F\n\x0cUserDeleteSN\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0c\n\x04uuid\x18\x03 \x01(\t\"\x16\n\x14UserDeleteSNResponse\"v\n\x13UserAppendSNRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x11\n\tsocial_id\x18\x03 \x01(\t\x12\x13\n\x0bsocial_name\x18\x04 \x01(\t\x12\r\n\x05\x65mail\x18\x05 \x01(\t\"\x14\n\x12UserAppendResponse\"q\n\x19UserUpdatePasswordRequest\x12\x14\n\x0cold_password\x18\x01 \x01(\t\x12\x14\n\x0cnew_password\x18\x02 \x01(\t\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x03 \x01(\t\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"T\n\x0bUserHistory\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65vice_type\x18\x03 \x01(\t\x12\x0e\n\x06\x61\x63tive\x18\x04 \x01(\x08\"[\n\x12UserHistoryRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0c\n\x04skip\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"1\n\x13UserHistoryResponse\x12\x1a\n\x04rows\x18\x01 \x03(\x0b\x32\x0c.UserHistory\"Y\n\x0bUserAddRole\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0f\n\x07role_id\x18\x04 \x01(\x05\"\\\n\x0eUserRemoveRole\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x0f\n\x07role_id\x18\x04 \x01(\x05\"D\n\nRoleCreate\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\"G\n\nRoleRemove\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0f\n\x07role_id\x18\x03 \x01(\x05\"U\n\nRoleUpdate\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0f\n\x07role_id\x18\x03 \x01(\x05\x12\x0c\n\x04name\x18\x04 \x01(\t\"(\n\x0cRoleResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\"T\n\x0bRoleGetList\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0c\n\x04skip\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"/\n\x10RoleResponseList\x12\x1b\n\x04rows\x18\x01 \x03(\x0b\x32\r.RoleResponse2\x8d\x02\n\x04\x41uth\x12&\n\x05Login\x12\r.LoginRequest\x1a\x0e.LoginResponse\x12;\n\x0cRefreshToken\x12\x14.RefreshTokenRequest\x1a\x15.RefreshTokenResponse\x12)\n\x06Logout\x12\x0e.LogoutRequest\x1a\x0f.LogoutResponse\x12\x32\n\tTestToken\x12\x11.TestTokenRequest\x1a\x12.TestTokenResponse\x12\x41\n\x0eLoginViaGoogle\x12\x16.LoginViaGoogleRequest\x1a\x17.LoginViaGoogleResponse2\xa6\x04\n\x04User\x12%\n\x03Get\x12\x0f.UserGetRequest\x1a\r.UserResponse\x12\x34\n\x07GetList\x12\x13.UserGetListRequest\x1a\x14.UserGetListResponse\x12\x37\n\nGetHistory\x12\x13.UserHistoryRequest\x1a\x14.UserHistoryResponse\x12+\n\x06\x43reate\x12\x12.UserCreateRequest\x1a\r.UserResponse\x12\x35\n\x0bUpdateEmail\x12\x17.UserUpdateEmailRequest\x1a\r.UserResponse\x12;\n\x0eUpdatePassword\x12\x1a.UserUpdatePasswordRequest\x1a\r.UserResponse\x12(\n\x08\x44\x65leteMe\x12\r.UserDeleteMe\x1a\r.UserResponse\x12\x30\n\x08\x44\x65leteSN\x12\r.UserDeleteSN\x1a\x15.UserDeleteSNResponse\x12\x35\n\x08\x41ppendSN\x12\x14.UserAppendSNRequest\x1a\x13.UserAppendResponse\x12&\n\x07\x61\x64\x64Role\x12\x0c.UserAddRole\x1a\r.UserResponse\x12,\n\nremoveRole\x12\x0f.UserRemoveRole\x1a\r.UserResponse2\xa0\x01\n\x04Role\x12&\n\x03Get\x12\x0c.RoleGetList\x1a\x11.RoleResponseList\x12$\n\x06\x43reate\x12\x0b.RoleCreate\x1a\r.RoleResponse\x12$\n\x06\x44\x65lete\x12\x0b.RoleRemove\x1a\r.RoleResponse\x12$\n\x06Update\x12\x0b.RoleUpdate\x1a\r.RoleResponseb\x06proto3'
 )
 
 
@@ -124,6 +124,112 @@ _LOGINRESPONSE = _descriptor.Descriptor(
 )
 
 
+_LOGINVIAGOOGLEREQUEST = _descriptor.Descriptor(
+  name='LoginViaGoogleRequest',
+  full_name='LoginViaGoogleRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='social_id', full_name='LoginViaGoogleRequest.social_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='social_name', full_name='LoginViaGoogleRequest.social_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='email', full_name='LoginViaGoogleRequest.email', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='LoginViaGoogleRequest.user_agent', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=185,
+  serialized_end=283,
+)
+
+
+_LOGINVIAGOOGLERESPONSE = _descriptor.Descriptor(
+  name='LoginViaGoogleResponse',
+  full_name='LoginViaGoogleResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='access_token', full_name='LoginViaGoogleResponse.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='refresh_token', full_name='LoginViaGoogleResponse.refresh_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='expires_in', full_name='LoginViaGoogleResponse.expires_in', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='token_type', full_name='LoginViaGoogleResponse.token_type', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=285,
+  serialized_end=394,
+)
+
+
 _REFRESHTOKENREQUEST = _descriptor.Descriptor(
   name='RefreshTokenRequest',
   full_name='RefreshTokenRequest',
@@ -158,8 +264,8 @@ _REFRESHTOKENREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=185,
-  serialized_end=249,
+  serialized_start=396,
+  serialized_end=460,
 )
 
 
@@ -211,8 +317,8 @@ _REFRESHTOKENRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=251,
-  serialized_end=358,
+  serialized_start=462,
+  serialized_end=569,
 )
 
 
@@ -250,8 +356,8 @@ _LOGOUTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=360,
-  serialized_end=417,
+  serialized_start=571,
+  serialized_end=628,
 )
 
 
@@ -275,8 +381,8 @@ _LOGOUTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=419,
-  serialized_end=435,
+  serialized_start=630,
+  serialized_end=646,
 )
 
 
@@ -314,8 +420,8 @@ _TESTTOKENREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=437,
-  serialized_end=497,
+  serialized_start=648,
+  serialized_end=708,
 )
 
 
@@ -339,8 +445,8 @@ _TESTTOKENRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=499,
-  serialized_end=518,
+  serialized_start=710,
+  serialized_end=729,
 )
 
 
@@ -385,8 +491,54 @@ _USERCREATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=520,
-  serialized_end=587,
+  serialized_start=731,
+  serialized_end=798,
+)
+
+
+_SOCIALRESPONSE = _descriptor.Descriptor(
+  name='SocialResponse',
+  full_name='SocialResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='SocialResponse.id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='social_name', full_name='SocialResponse.social_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='email', full_name='SocialResponse.email', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=800,
+  serialized_end=864,
 )
 
 
@@ -419,6 +571,20 @@ _USERRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='roles', full_name='UserResponse.roles', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='social_networks', full_name='UserResponse.social_networks', index=4,
+      number=5, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -431,8 +597,8 @@ _USERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=589,
-  serialized_end=645,
+  serialized_start=867,
+  serialized_end=995,
 )
 
 
@@ -470,8 +636,8 @@ _USERGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=647,
-  serialized_end=705,
+  serialized_start=997,
+  serialized_end=1055,
 )
 
 
@@ -523,8 +689,8 @@ _USERGETLISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=707,
-  serialized_end=798,
+  serialized_start=1057,
+  serialized_end=1148,
 )
 
 
@@ -569,8 +735,8 @@ _USERGETLISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=800,
-  serialized_end=880,
+  serialized_start=1150,
+  serialized_end=1230,
 )
 
 
@@ -597,14 +763,7 @@ _USERUPDATEEMAILREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='password', full_name='UserUpdateEmailRequest.password', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='email', full_name='UserUpdateEmailRequest.email', index=3,
+      name='email', full_name='UserUpdateEmailRequest.email', index=2,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -622,8 +781,8 @@ _USERUPDATEEMAILREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=882,
-  serialized_end=981,
+  serialized_start=1232,
+  serialized_end=1313,
 )
 
 
@@ -649,8 +808,47 @@ _USERDELETEME = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1315,
+  serialized_end=1371,
+)
+
+
+_USERDELETESN = _descriptor.Descriptor(
+  name='UserDeleteSN',
+  full_name='UserDeleteSN',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
     _descriptor.FieldDescriptor(
-      name='password', full_name='UserDeleteMe.password', index=2,
+      name='access_token', full_name='UserDeleteSN.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='UserDeleteSN.user_agent', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='uuid', full_name='UserDeleteSN.uuid', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -668,8 +866,118 @@ _USERDELETEME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=983,
-  serialized_end=1057,
+  serialized_start=1373,
+  serialized_end=1443,
+)
+
+
+_USERDELETESNRESPONSE = _descriptor.Descriptor(
+  name='UserDeleteSNResponse',
+  full_name='UserDeleteSNResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1445,
+  serialized_end=1467,
+)
+
+
+_USERAPPENDSNREQUEST = _descriptor.Descriptor(
+  name='UserAppendSNRequest',
+  full_name='UserAppendSNRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='access_token', full_name='UserAppendSNRequest.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='UserAppendSNRequest.user_agent', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='social_id', full_name='UserAppendSNRequest.social_id', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='social_name', full_name='UserAppendSNRequest.social_name', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='email', full_name='UserAppendSNRequest.email', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1469,
+  serialized_end=1587,
+)
+
+
+_USERAPPENDRESPONSE = _descriptor.Descriptor(
+  name='UserAppendResponse',
+  full_name='UserAppendResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1589,
+  serialized_end=1609,
 )
 
 
@@ -721,8 +1029,8 @@ _USERUPDATEPASSWORDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1059,
-  serialized_end=1172,
+  serialized_start=1611,
+  serialized_end=1724,
 )
 
 
@@ -774,8 +1082,8 @@ _USERHISTORY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1174,
-  serialized_end=1258,
+  serialized_start=1726,
+  serialized_end=1810,
 )
 
 
@@ -827,8 +1135,8 @@ _USERHISTORYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1260,
-  serialized_end=1351,
+  serialized_start=1812,
+  serialized_end=1903,
 )
 
 
@@ -842,7 +1150,7 @@ _USERHISTORYRESPONSE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='rows', full_name='UserHistoryResponse.rows', index=0,
-      number=2, type=11, cpp_type=10, label=3,
+      number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -859,14 +1167,394 @@ _USERHISTORYRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1353,
-  serialized_end=1402,
+  serialized_start=1905,
+  serialized_end=1954,
 )
 
+
+_USERADDROLE = _descriptor.Descriptor(
+  name='UserAddRole',
+  full_name='UserAddRole',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='access_token', full_name='UserAddRole.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='UserAddRole.user_agent', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_id', full_name='UserAddRole.user_id', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='role_id', full_name='UserAddRole.role_id', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1956,
+  serialized_end=2045,
+)
+
+
+_USERREMOVEROLE = _descriptor.Descriptor(
+  name='UserRemoveRole',
+  full_name='UserRemoveRole',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='access_token', full_name='UserRemoveRole.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='UserRemoveRole.user_agent', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_id', full_name='UserRemoveRole.user_id', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='role_id', full_name='UserRemoveRole.role_id', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2047,
+  serialized_end=2139,
+)
+
+
+_ROLECREATE = _descriptor.Descriptor(
+  name='RoleCreate',
+  full_name='RoleCreate',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='access_token', full_name='RoleCreate.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='RoleCreate.user_agent', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='RoleCreate.name', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2141,
+  serialized_end=2209,
+)
+
+
+_ROLEREMOVE = _descriptor.Descriptor(
+  name='RoleRemove',
+  full_name='RoleRemove',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='access_token', full_name='RoleRemove.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='RoleRemove.user_agent', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='role_id', full_name='RoleRemove.role_id', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2211,
+  serialized_end=2282,
+)
+
+
+_ROLEUPDATE = _descriptor.Descriptor(
+  name='RoleUpdate',
+  full_name='RoleUpdate',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='access_token', full_name='RoleUpdate.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='RoleUpdate.user_agent', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='role_id', full_name='RoleUpdate.role_id', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='RoleUpdate.name', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2284,
+  serialized_end=2369,
+)
+
+
+_ROLERESPONSE = _descriptor.Descriptor(
+  name='RoleResponse',
+  full_name='RoleResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='RoleResponse.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='RoleResponse.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2371,
+  serialized_end=2411,
+)
+
+
+_ROLEGETLIST = _descriptor.Descriptor(
+  name='RoleGetList',
+  full_name='RoleGetList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='access_token', full_name='RoleGetList.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='skip', full_name='RoleGetList.skip', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='limit', full_name='RoleGetList.limit', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='RoleGetList.user_agent', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2413,
+  serialized_end=2497,
+)
+
+
+_ROLERESPONSELIST = _descriptor.Descriptor(
+  name='RoleResponseList',
+  full_name='RoleResponseList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='rows', full_name='RoleResponseList.rows', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2499,
+  serialized_end=2546,
+)
+
+_USERRESPONSE.fields_by_name['roles'].message_type = _ROLERESPONSE
+_USERRESPONSE.fields_by_name['social_networks'].message_type = _SOCIALRESPONSE
 _USERGETLISTRESPONSE.fields_by_name['users'].message_type = _USERRESPONSE
 _USERHISTORYRESPONSE.fields_by_name['rows'].message_type = _USERHISTORY
+_ROLERESPONSELIST.fields_by_name['rows'].message_type = _ROLERESPONSE
 DESCRIPTOR.message_types_by_name['LoginRequest'] = _LOGINREQUEST
 DESCRIPTOR.message_types_by_name['LoginResponse'] = _LOGINRESPONSE
+DESCRIPTOR.message_types_by_name['LoginViaGoogleRequest'] = _LOGINVIAGOOGLEREQUEST
+DESCRIPTOR.message_types_by_name['LoginViaGoogleResponse'] = _LOGINVIAGOOGLERESPONSE
 DESCRIPTOR.message_types_by_name['RefreshTokenRequest'] = _REFRESHTOKENREQUEST
 DESCRIPTOR.message_types_by_name['RefreshTokenResponse'] = _REFRESHTOKENRESPONSE
 DESCRIPTOR.message_types_by_name['LogoutRequest'] = _LOGOUTREQUEST
@@ -874,16 +1562,29 @@ DESCRIPTOR.message_types_by_name['LogoutResponse'] = _LOGOUTRESPONSE
 DESCRIPTOR.message_types_by_name['TestTokenRequest'] = _TESTTOKENREQUEST
 DESCRIPTOR.message_types_by_name['TestTokenResponse'] = _TESTTOKENRESPONSE
 DESCRIPTOR.message_types_by_name['UserCreateRequest'] = _USERCREATEREQUEST
+DESCRIPTOR.message_types_by_name['SocialResponse'] = _SOCIALRESPONSE
 DESCRIPTOR.message_types_by_name['UserResponse'] = _USERRESPONSE
 DESCRIPTOR.message_types_by_name['UserGetRequest'] = _USERGETREQUEST
 DESCRIPTOR.message_types_by_name['UserGetListRequest'] = _USERGETLISTREQUEST
 DESCRIPTOR.message_types_by_name['UserGetListResponse'] = _USERGETLISTRESPONSE
 DESCRIPTOR.message_types_by_name['UserUpdateEmailRequest'] = _USERUPDATEEMAILREQUEST
 DESCRIPTOR.message_types_by_name['UserDeleteMe'] = _USERDELETEME
+DESCRIPTOR.message_types_by_name['UserDeleteSN'] = _USERDELETESN
+DESCRIPTOR.message_types_by_name['UserDeleteSNResponse'] = _USERDELETESNRESPONSE
+DESCRIPTOR.message_types_by_name['UserAppendSNRequest'] = _USERAPPENDSNREQUEST
+DESCRIPTOR.message_types_by_name['UserAppendResponse'] = _USERAPPENDRESPONSE
 DESCRIPTOR.message_types_by_name['UserUpdatePasswordRequest'] = _USERUPDATEPASSWORDREQUEST
 DESCRIPTOR.message_types_by_name['UserHistory'] = _USERHISTORY
 DESCRIPTOR.message_types_by_name['UserHistoryRequest'] = _USERHISTORYREQUEST
 DESCRIPTOR.message_types_by_name['UserHistoryResponse'] = _USERHISTORYRESPONSE
+DESCRIPTOR.message_types_by_name['UserAddRole'] = _USERADDROLE
+DESCRIPTOR.message_types_by_name['UserRemoveRole'] = _USERREMOVEROLE
+DESCRIPTOR.message_types_by_name['RoleCreate'] = _ROLECREATE
+DESCRIPTOR.message_types_by_name['RoleRemove'] = _ROLEREMOVE
+DESCRIPTOR.message_types_by_name['RoleUpdate'] = _ROLEUPDATE
+DESCRIPTOR.message_types_by_name['RoleResponse'] = _ROLERESPONSE
+DESCRIPTOR.message_types_by_name['RoleGetList'] = _ROLEGETLIST
+DESCRIPTOR.message_types_by_name['RoleResponseList'] = _ROLERESPONSELIST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 LoginRequest = _reflection.GeneratedProtocolMessageType('LoginRequest', (_message.Message,), {
@@ -899,6 +1600,20 @@ LoginResponse = _reflection.GeneratedProtocolMessageType('LoginResponse', (_mess
   # @@protoc_insertion_point(class_scope:LoginResponse)
   })
 _sym_db.RegisterMessage(LoginResponse)
+
+LoginViaGoogleRequest = _reflection.GeneratedProtocolMessageType('LoginViaGoogleRequest', (_message.Message,), {
+  'DESCRIPTOR' : _LOGINVIAGOOGLEREQUEST,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:LoginViaGoogleRequest)
+  })
+_sym_db.RegisterMessage(LoginViaGoogleRequest)
+
+LoginViaGoogleResponse = _reflection.GeneratedProtocolMessageType('LoginViaGoogleResponse', (_message.Message,), {
+  'DESCRIPTOR' : _LOGINVIAGOOGLERESPONSE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:LoginViaGoogleResponse)
+  })
+_sym_db.RegisterMessage(LoginViaGoogleResponse)
 
 RefreshTokenRequest = _reflection.GeneratedProtocolMessageType('RefreshTokenRequest', (_message.Message,), {
   'DESCRIPTOR' : _REFRESHTOKENREQUEST,
@@ -949,6 +1664,13 @@ UserCreateRequest = _reflection.GeneratedProtocolMessageType('UserCreateRequest'
   })
 _sym_db.RegisterMessage(UserCreateRequest)
 
+SocialResponse = _reflection.GeneratedProtocolMessageType('SocialResponse', (_message.Message,), {
+  'DESCRIPTOR' : _SOCIALRESPONSE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:SocialResponse)
+  })
+_sym_db.RegisterMessage(SocialResponse)
+
 UserResponse = _reflection.GeneratedProtocolMessageType('UserResponse', (_message.Message,), {
   'DESCRIPTOR' : _USERRESPONSE,
   '__module__' : 'auth_pb2'
@@ -991,6 +1713,34 @@ UserDeleteMe = _reflection.GeneratedProtocolMessageType('UserDeleteMe', (_messag
   })
 _sym_db.RegisterMessage(UserDeleteMe)
 
+UserDeleteSN = _reflection.GeneratedProtocolMessageType('UserDeleteSN', (_message.Message,), {
+  'DESCRIPTOR' : _USERDELETESN,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:UserDeleteSN)
+  })
+_sym_db.RegisterMessage(UserDeleteSN)
+
+UserDeleteSNResponse = _reflection.GeneratedProtocolMessageType('UserDeleteSNResponse', (_message.Message,), {
+  'DESCRIPTOR' : _USERDELETESNRESPONSE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:UserDeleteSNResponse)
+  })
+_sym_db.RegisterMessage(UserDeleteSNResponse)
+
+UserAppendSNRequest = _reflection.GeneratedProtocolMessageType('UserAppendSNRequest', (_message.Message,), {
+  'DESCRIPTOR' : _USERAPPENDSNREQUEST,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:UserAppendSNRequest)
+  })
+_sym_db.RegisterMessage(UserAppendSNRequest)
+
+UserAppendResponse = _reflection.GeneratedProtocolMessageType('UserAppendResponse', (_message.Message,), {
+  'DESCRIPTOR' : _USERAPPENDRESPONSE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:UserAppendResponse)
+  })
+_sym_db.RegisterMessage(UserAppendResponse)
+
 UserUpdatePasswordRequest = _reflection.GeneratedProtocolMessageType('UserUpdatePasswordRequest', (_message.Message,), {
   'DESCRIPTOR' : _USERUPDATEPASSWORDREQUEST,
   '__module__' : 'auth_pb2'
@@ -1019,6 +1769,62 @@ UserHistoryResponse = _reflection.GeneratedProtocolMessageType('UserHistoryRespo
   })
 _sym_db.RegisterMessage(UserHistoryResponse)
 
+UserAddRole = _reflection.GeneratedProtocolMessageType('UserAddRole', (_message.Message,), {
+  'DESCRIPTOR' : _USERADDROLE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:UserAddRole)
+  })
+_sym_db.RegisterMessage(UserAddRole)
+
+UserRemoveRole = _reflection.GeneratedProtocolMessageType('UserRemoveRole', (_message.Message,), {
+  'DESCRIPTOR' : _USERREMOVEROLE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:UserRemoveRole)
+  })
+_sym_db.RegisterMessage(UserRemoveRole)
+
+RoleCreate = _reflection.GeneratedProtocolMessageType('RoleCreate', (_message.Message,), {
+  'DESCRIPTOR' : _ROLECREATE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:RoleCreate)
+  })
+_sym_db.RegisterMessage(RoleCreate)
+
+RoleRemove = _reflection.GeneratedProtocolMessageType('RoleRemove', (_message.Message,), {
+  'DESCRIPTOR' : _ROLEREMOVE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:RoleRemove)
+  })
+_sym_db.RegisterMessage(RoleRemove)
+
+RoleUpdate = _reflection.GeneratedProtocolMessageType('RoleUpdate', (_message.Message,), {
+  'DESCRIPTOR' : _ROLEUPDATE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:RoleUpdate)
+  })
+_sym_db.RegisterMessage(RoleUpdate)
+
+RoleResponse = _reflection.GeneratedProtocolMessageType('RoleResponse', (_message.Message,), {
+  'DESCRIPTOR' : _ROLERESPONSE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:RoleResponse)
+  })
+_sym_db.RegisterMessage(RoleResponse)
+
+RoleGetList = _reflection.GeneratedProtocolMessageType('RoleGetList', (_message.Message,), {
+  'DESCRIPTOR' : _ROLEGETLIST,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:RoleGetList)
+  })
+_sym_db.RegisterMessage(RoleGetList)
+
+RoleResponseList = _reflection.GeneratedProtocolMessageType('RoleResponseList', (_message.Message,), {
+  'DESCRIPTOR' : _ROLERESPONSELIST,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:RoleResponseList)
+  })
+_sym_db.RegisterMessage(RoleResponseList)
+
 
 
 _AUTH = _descriptor.ServiceDescriptor(
@@ -1028,8 +1834,8 @@ _AUTH = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1405,
-  serialized_end=1607,
+  serialized_start=2549,
+  serialized_end=2818,
   methods=[
   _descriptor.MethodDescriptor(
     name='Login',
@@ -1071,6 +1877,16 @@ _AUTH = _descriptor.ServiceDescriptor(
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
+  _descriptor.MethodDescriptor(
+    name='LoginViaGoogle',
+    full_name='Auth.LoginViaGoogle',
+    index=4,
+    containing_service=None,
+    input_type=_LOGINVIAGOOGLEREQUEST,
+    output_type=_LOGINVIAGOOGLERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
 ])
 _sym_db.RegisterServiceDescriptor(_AUTH)
 
@@ -1084,8 +1900,8 @@ _USER = _descriptor.ServiceDescriptor(
   index=1,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1610,
-  serialized_end=1969,
+  serialized_start=2821,
+  serialized_end=3371,
   methods=[
   _descriptor.MethodDescriptor(
     name='Get',
@@ -1157,9 +1973,105 @@ _USER = _descriptor.ServiceDescriptor(
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
+  _descriptor.MethodDescriptor(
+    name='DeleteSN',
+    full_name='User.DeleteSN',
+    index=7,
+    containing_service=None,
+    input_type=_USERDELETESN,
+    output_type=_USERDELETESNRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='AppendSN',
+    full_name='User.AppendSN',
+    index=8,
+    containing_service=None,
+    input_type=_USERAPPENDSNREQUEST,
+    output_type=_USERAPPENDRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='addRole',
+    full_name='User.addRole',
+    index=9,
+    containing_service=None,
+    input_type=_USERADDROLE,
+    output_type=_USERRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='removeRole',
+    full_name='User.removeRole',
+    index=10,
+    containing_service=None,
+    input_type=_USERREMOVEROLE,
+    output_type=_USERRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
 ])
 _sym_db.RegisterServiceDescriptor(_USER)
 
 DESCRIPTOR.services_by_name['User'] = _USER
+
+
+_ROLE = _descriptor.ServiceDescriptor(
+  name='Role',
+  full_name='Role',
+  file=DESCRIPTOR,
+  index=2,
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_start=3374,
+  serialized_end=3534,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='Get',
+    full_name='Role.Get',
+    index=0,
+    containing_service=None,
+    input_type=_ROLEGETLIST,
+    output_type=_ROLERESPONSELIST,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Create',
+    full_name='Role.Create',
+    index=1,
+    containing_service=None,
+    input_type=_ROLECREATE,
+    output_type=_ROLERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Delete',
+    full_name='Role.Delete',
+    index=2,
+    containing_service=None,
+    input_type=_ROLEREMOVE,
+    output_type=_ROLERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Update',
+    full_name='Role.Update',
+    index=3,
+    containing_service=None,
+    input_type=_ROLEUPDATE,
+    output_type=_ROLERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_ROLE)
+
+DESCRIPTOR.services_by_name['Role'] = _ROLE
 
 # @@protoc_insertion_point(module_scope)
