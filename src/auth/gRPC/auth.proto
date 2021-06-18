@@ -72,10 +72,17 @@ message UserCreateRequest {
     string email = 3;
 }
 
+message SocialResponse {
+    string id = 1;
+    string social_name = 2;
+}
+
 message UserResponse {
     string id = 1;
     string login = 2;
     string email = 3;
+    repeated SocialResponse social_networks = 4;
+
 }
 
 message UserGetRequest {
@@ -152,7 +159,7 @@ message UserHistoryRequest {
 }
 
 message UserHistoryResponse {
-    repeated UserHistory rows = 2;
+    repeated UserHistory rows = 1;
 }
 
 
