@@ -22,7 +22,7 @@ class PersonView(BaseView):
             token_validation: bool = Depends(check_token)
     ) -> Person:
         """Возвращает информацию по одной персоне"""
-        if token_validation:
+        if token_validation['access']:
             person = await person_service.get_by_id(url=str(request.url), id=str(person_id))
             if not person:
                 raise HTTPException(
@@ -50,7 +50,7 @@ class PersonView(BaseView):
     ) -> List[FilmShort]:
         """Возвращает список фильмов в которых участвовал персонаж"""
         # отсекаем окончание запроса для получения валидного кэша
-        if token_validation:
+        if token_validation['access']:
             person_url = "/".join(str(request.url).split("/")[:-1])
             person = await person_service.get_by_id(url=person_url, id=str(person_id))
             if not person:
@@ -82,7 +82,7 @@ class PersonView(BaseView):
     ):
         """Возвращает информацию
         по одному или нескольким персонам"""
-        if token_validation:
+        if token_validation['access']:
             persons = await person_service.get_by_param(
                 url=str(request.url), q=query, page=page, size=size
             )

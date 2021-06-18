@@ -12,7 +12,6 @@ from services.film import FilmService, get_film_service
 router = APIRouter()
 
 
-
 class Order(str, Enum):
     desc = "DESC"
     asc = "ASC"
@@ -35,9 +34,18 @@ class FilmView(BaseView):
     ) -> Optional[List[FilmShort]]:
         """Возвращает короткую информацию по всем фильмам, отсортированным по рейтингу,
         есть возможность фильтровать фильмы по id жанров"""
-        if token_validation:
+        if token_validation['access']:
+            is_premium = token_validation.get('is_premium')
+            url = str(request.url)+f'&is_premium={is_premium}'
             films = await film_service.get_by_param(
-                url=str(request.url), order=order, genre=genre, page=page, size=size, query=query, adult_content=adult_content
+                url=url,
+                order=order,
+                genre=genre,
+                page=page,
+                size=size,
+                query=query,
+                adult_content=adult_content,
+                is_premium=is_premium
             )
 
             if not films:
@@ -48,8 +56,8 @@ class FilmView(BaseView):
             return films
 
         raise HTTPException(
-                status_code=HTTPStatus.UNAUTHORIZED, detail="token not valid"
-            )
+            status_code=HTTPStatus.UNAUTHORIZED, detail="token not valid"
+        )
 
     @router.get("/{film_id}", response_model=Film, summary="Фильм")
     async def get_details(
@@ -61,14 +69,25 @@ class FilmView(BaseView):
 
     ) -> Film:
         """Возвращает информацию по одному фильму"""
-        if token_validation:
-            film = await film_service.get_by_id(url=str(request.url), id=film_id, adult_content=adult_content)
+        if token_validation['access']:
+            is_premium = token_validation.get('is_premium')
+            url = str(request.url)+f'&is_premium={is_premium}'
+            film = await film_service.get_by_id(url=url,
+                                                id=film_id)
             if not film:
                 raise HTTPException(
                     status_code=HTTPStatus.NOT_FOUND, detail="film not found"
                 )
+            if film['is_adult'] != adult_content:
+                raise HTTPException(
+                    status_code=HTTPStatus.FORBIDDEN, detail="this is an adult movie"
+                )
+            if film['is_premium'] != is_premium:
+                                raise HTTPException(
+                    status_code=HTTPStatus.FORBIDDEN, detail="this is a movie for premium users"
+                )
             return film
 
         raise HTTPException(
-                status_code=HTTPStatus.UNAUTHORIZED, detail="token not valid"
-            )
+            status_code=HTTPStatus.UNAUTHORIZED, detail="token not valid"
+        )

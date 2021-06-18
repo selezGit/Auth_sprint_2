@@ -52,5 +52,4 @@ def login_via_google_logic(social_id: str, social_name: str,
                                                   email=email,
                                                   user_agent=user_agent)
     request = MessageToDict(client.LoginViaGoogle(login_via_google_data))
-
     return jsonify(request)

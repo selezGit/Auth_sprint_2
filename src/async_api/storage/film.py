@@ -12,12 +12,12 @@ import logging
 class FilmBaseStorage(BaseStorage):
     @abc.abstractmethod
     async def get_multi(
-        self, page: int, size: int, q: str = None, order: str = None, genre: str = None, adult_content: bool = False
+        self, page: int, size: int, q: str = None, order: str = None, genre: str = None, is_premium: bool = False, adult_content: bool = False
     ) -> List[Optional[Dict]]:
         pass
 
     @abc.abstractmethod
-    async def get(self, id: str, adult_content: bool = False) -> Optional[Dict]:
+    async def get(self, id: str) -> Optional[Dict]:
         pass
 
     @abc.abstractmethod
@@ -33,7 +33,7 @@ class FilmElasticStorage(FilmBaseStorage):
 
     @backoff.on_exception(backoff.expo, Exception)
     async def get_multi(
-        self, page: int, size: int, q: str = None, order: str = None, genre: str = None, adult_content: bool = False
+        self, page: int, size: int, is_premium: bool = False, adult_content: bool = False, q: str = None, order: str = None, genre: str = None
     ) -> List[Optional[Dict]]:
 
         query = {"size": size, "from": (page - 1) * size}
@@ -44,12 +44,30 @@ class FilmElasticStorage(FilmBaseStorage):
         if genre:
             query["query"] = {
                 "bool": {
-                    "filter": {
+                    "filter": [{
                         "bool": {"should": {"match_phrase": {"genres.id": genre}}}
-                    }
+                    }]
                 }
             }
 
+        if not adult_content:
+            _query = query.setdefault("query", dict())
+            _bool = _query.setdefault("bool", dict())
+            _filter = _bool.setdefault("filter", list())
+            _filter.append({"bool":{"should":{"match":{"is_adult":adult_content}}}})
+            _query["bool"] = _bool
+            _bool["filter"] = _filter
+            query["query"] = _query    
+        
+        if not is_premium:
+            _query = query.setdefault("query", dict())
+            _bool = _query.setdefault("bool", dict())
+            _filter = _bool.setdefault("filter", list())
+            _filter.append({"bool":{"should":{"match":{"is_premium":is_premium}}}})
+            _query["bool"] = _bool
+            _bool["filter"] = _filter
+            query["query"] = _query    
+        
         if q:
             _query = query.setdefault("query", dict())
             _bool = _query.setdefault("bool", dict())
@@ -88,7 +106,7 @@ class FilmElasticStorage(FilmBaseStorage):
         return [film["_source"] for film in result]
 
     @backoff.on_exception(backoff.expo, Exception)
-    async def get(self, id: str, adult_content: bool = False) -> Optional[Dict]:
+    async def get(self, id: str) -> Optional[Dict]:
         try:
             result = await self.elastic.get("movies", id)
             return result["_source"]

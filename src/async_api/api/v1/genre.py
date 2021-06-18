@@ -26,7 +26,7 @@ class GenreView(BaseView):
             token_validation: bool = Depends(check_token)
     ) -> Optional[List[Genre]]:
         """Возвращает инф-ию по всем жанрам с возможностью пагинации"""
-        if token_validation:
+        if token_validation['access']:
             genres = await genre_service.get_by_param(
                 url=str(request.url), page=page, size=size
             )
@@ -49,7 +49,7 @@ class GenreView(BaseView):
             token_validation: bool = Depends(check_token)
     ) -> Genre:
         """Возвращает информацию по одному жанру"""
-        if token_validation:
+        if token_validation['access']:
             genre = await genre_service.get_by_id(url=str(request.url), id=str(genre_id))
             if not genre:
                 raise HTTPException(
