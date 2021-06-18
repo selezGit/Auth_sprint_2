@@ -32,6 +32,8 @@ services:
       - ./src/auth/.env
     ports: 
       - 5433:5432
+    expose:
+      - "5433"
     volumes:
       - ./.pg-auth-data:/var/lib/postgresql/data/
     networks:
@@ -45,6 +47,8 @@ services:
       - ./.redis-auth-data:/data
     ports:
       - 6380:6379
+    expose:
+      - "6380"
     networks:
       - microservices
 networks:
