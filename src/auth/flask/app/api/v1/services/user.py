@@ -52,9 +52,12 @@ def get_user_logic(access_token: str, user_agent: str):
 
 
 @error_handler
-def history_logic(access_token: str, user_agent: str):
-    history_data = UserHistoryRequest(
-        access_token=access_token, user_agent=user_agent)
+def history_logic(skip: int, limit: int,
+                  access_token: str, user_agent: str):
+    history_data = UserHistoryRequest(skip=skip,
+                                      limit=limit,
+                                      access_token=access_token,
+                                      user_agent=user_agent)
     request = MessageToDict(client.GetHistory(history_data))
     return jsonify(request)
 
