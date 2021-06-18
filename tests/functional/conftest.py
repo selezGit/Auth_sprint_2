@@ -1,6 +1,6 @@
 import asyncio
 import time
-from typing import Any
+from typing import Any, Dict
 
 import aiohttp
 import aioredis
@@ -65,22 +65,58 @@ async def make_get_request(session, redis_client):
 
 @pytest.fixture
 async def make_auth_get_request(session, auth_redis_client):
-    async def inner(method: str, params: dict = None, cleaning_redis: bool = True) -> HTTPResponse:
+    async def inner(method: str, params: dict = None, cleaning_redis: bool = True, data: Dict = None) -> HTTPResponse:
         params = params or {}
         url = SETTINGS.auth_host + '/api/v1' + method
         start = time.time()
-        async with session.get(url, params=params) as response:
-            #  очищаем кэш redis
-            if cleaning_redis:
-                await auth_redis_client.delete(str(response.url))
+        if method == 'get':
+            async with session.get(url, params=params) as response:
+                #  очищаем кэш redis
+                if cleaning_redis:
+                    await auth_redis_client.delete(str(response.url))
 
-            return HTTPResponse(
-                body=await response.json(),
-                headers=response.headers,
-                status=response.status,
-                url=response.url,
-                resp_speed=(time.time()-start))
+                return HTTPResponse(
+                    body=await response.json(),
+                    headers=response.headers,
+                    status=response.status,
+                    url=response.url,
+                    resp_speed=(time.time()-start))
+        elif method == 'post':
+            async with session.post(url, params=params, data=data) as response:
+                #  очищаем кэш redis
+                if cleaning_redis:
+                    await auth_redis_client.delete(str(response.url))
 
+                return HTTPResponse(
+                    body=await response.json(),
+                    headers=response.headers,
+                    status=response.status,
+                    url=response.url,
+                    resp_speed=(time.time() - start))
+        elif method == 'patch':
+            async with session.patch(url, params=params, data=data) as response:
+                #  очищаем кэш redis
+                if cleaning_redis:
+                    await auth_redis_client.delete(str(response.url))
+
+                return HTTPResponse(
+                    body=await response.json(),
+                    headers=response.headers,
+                    status=response.status,
+                    url=response.url,
+                    resp_speed=(time.time() - start))
+        elif method == 'delete':
+            async with session.delete(url, params=params) as response:
+                #  очищаем кэш redis
+                if cleaning_redis:
+                    await auth_redis_client.delete(str(response.url))
+
+                return HTTPResponse(
+                    body=await response.json(),
+                    headers=response.headers,
+                    status=response.status,
+                    url=response.url,
+                    resp_speed=(time.time() - start))
     return inner
 
 

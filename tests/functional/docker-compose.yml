@@ -20,7 +20,7 @@ services:
     container_name: func-tests
     image: fastapi-backend
     volumes:
-      - ../../tests:/usr/src/tests
+      - tests:/usr/src/tests
     entrypoint: >
       sh -c "pip install -r /usr/src/tests/functional/requirements.txt
       && python3 /usr/src/tests/functional/utils/wait_for_es.py
@@ -50,8 +50,61 @@ services:
       - redisdata:/data
     ports:
       - "6379:6379"
-
+  auth_api:
+    build:
+      context: ../../src/auth/flask
+    ports:
+      - 5000:5000
+    depends_on:
+      - db-auth
+      - redis-auth
+    volumes:
+      - ../../src/auth/flask:/usr/src/flask
+    command: gunicorn main:app -w 2 --threads 2 -b 0.0.0.0:5000 --reload
+    networks:
+      - microservices
+  server-auth:
+    build:
+      context: ../../src/auth/gRPC
+    env_file:
+      - ../../src/auth/.env
+    depends_on:
+      - db-auth
+      - redis-auth
+    expose:
+      - 500051
+    networks:
+      - microservices
+  db-auth:
+    container_name: db-auth
+    image: postgres:12.0-alpine
+    env_file:
+      - ../../src/auth/.env
+    ports:
+      - 5433:5432
+    expose:
+      - "5433"
+    volumes:
+      - .pg-auth-data:/var/lib/postgresql/data/
+    networks:
+      - microservices
+    restart: always
+  redis-auth:
+    container_name: redis-auth
+    image: redis:6
+    restart: always
+    volumes:
+      - .redis-auth-data:/data
+    ports:
+      - 6380:6379
+    expose:
+      - "6380"
+    networks:
+      - microservices
+networks:
+    microservices:
 
   
 volumes:
   redisdata:
+  tests:
