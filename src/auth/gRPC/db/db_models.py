@@ -56,7 +56,6 @@ class User(Base):
     login = Column(String(30), unique=True, nullable=True)
     password_hash = Column(String(100), nullable=True)
     email = Column(String(255), nullable=False, unique=True)
-    admin = Column(Boolean, default=False)
 
     users_sign_in = relationship('UserSignIn', cascade='all,delete')
     social_account = relationship('SocialAccount', cascade='all,delete', lazy='joined')

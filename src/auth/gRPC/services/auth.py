@@ -260,8 +260,11 @@ class AuthService(auth_pb2_grpc.AuthServicer):
 
         if user_id is None:
             try:
+                role = crud.role.get_by(db=db, name='confirm')
+
                 user = crud.user.create_social_account(
-                    db=db, email=request.email)
+                    db=db, email=request.email, role=role)
+                
                 social = crud.social_account.create(db=db, obj_in={
                     'user_id': user.id,
                     'social_id': request.social_id,
