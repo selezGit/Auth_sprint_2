@@ -32,7 +32,7 @@ class UserService(auth_pb2_grpc.UserServicer):
             context.set_details('email field required!')
             return UserResponse()
         try:
-            role = crud.role.get(db=db, id=3)
+            role = crud.role.get_by(db=db, name='confirm')
 
             user = crud.user.create(db=db, obj_in={
                 'login': request.login,
