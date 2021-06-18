@@ -3,7 +3,7 @@ import os
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String, Text, UniqueConstraint
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String, Text, UniqueConstraint, Integer, Table
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship, backref
 
@@ -23,6 +23,11 @@ def create_partition(target, connection, **kw) -> None:
     connection.execute(
         """CREATE TABLE IF NOT EXISTS "user_sign_in_web" PARTITION OF "users_sign_in" FOR VALUES IN ('web')"""
     )
+
+
+UserRoles = Table('user_roles', Base.metadata,
+                  Column('user_id', UUID(as_uuid=True), ForeignKey('users.id'), primary_key=True),
+                  Column('role_id', Integer, ForeignKey('roles.id', ondelete='CASCADE'), primary_key=True))
 
 
 class UserSignIn(Base):
@@ -54,6 +59,7 @@ class User(Base):
     admin = Column(Boolean, default=False)
 
     users_sign_in = relationship('UserSignIn', cascade='all,delete')
+    roles = relationship('Role', cascade='all,delete', secondary=UserRoles, lazy='joined')
 
     def __repr__(self):
         return f'<User {self.login}, ID: {self.id}, admin={self.admin}>'
@@ -65,7 +71,6 @@ class User(Base):
         self.admin = admin
 
 
-
 class SocialAccount(Base):
     __tablename__ = 'social_account'
 
@@ -74,21 +79,22 @@ class SocialAccount(Base):
     user = relationship(User, backref=backref('social_accounts', lazy=True))
 
     social_id = Column(Text, nullable=False)
-    social_name = Column(Text, nullable=False) # google
+    social_name = Column(Text, nullable=False)  # google
 
-    __table_args__ = (UniqueConstraint('social_id', 'social_name', name='social_pk'), )
+    __table_args__ = (UniqueConstraint('social_id', 'social_name', name='social_pk'),)
 
     def __repr__(self):
         return f'<SocialAccount {self.social_name}:{self.user_id}>'
 
-class Role(db.Model):
+
+class Role(Base):
     __tablename__ = 'roles'
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), unique=True)
+    id = Column(Integer(), primary_key=True)
+    name = Column(String(50), unique=True)
 
-
-class UserRoles(db.Model):
-    __tablename__ = 'user_roles'
-    id = db.Column(db.Integer(), primary_key=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), primary_key=True)
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
+#
+# class UserRoles(Base):
+#     __tablename__ = 'user_roles'
+#     id = Column(Integer(), primary_key=True)
+#     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), primary_key=True)
+#     role_id = Column(Integer(), ForeignKey('roles.id', ondelete='CASCADE'))
