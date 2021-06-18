@@ -148,12 +148,16 @@ class ChangeEmail(Resource):
 
 @user_ns.route('/history', endpoint='user_history')
 class History(Resource):
-    @user_ns.doc(security='access_token')
-    @user_ns.response(int(HTTPStatus.OK), 'user successfully deleted.', user_history_model)
+    @user_ns.doc(security='access_token', params={
+        'skip': {'in': 'query', 'default': 0},
+        'limit': {'in': 'query', 'default': 50}})
+    @user_ns.response(int(HTTPStatus.OK), 'success', user_history_model)
     @user_ns.response(int(HTTPStatus.UNAUTHORIZED), 'Token is invalid or expired.')
     @user_ns.response(int(HTTPStatus.TOO_MANY_REQUESTS), 'Too many requests')
     @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
     def get(self):
+        skip = int(request.args.get('skip'))
+        limit = int(request.args.get('limit'))
         access_token = request.headers.get('Authorization')
         user_agent = request.headers.get('User-Agent')
-        return history_logic(access_token=access_token, user_agent=user_agent)
+        return history_logic(skip=skip, limit=limit, access_token=access_token, user_agent=user_agent)

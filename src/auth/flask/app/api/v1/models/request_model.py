@@ -20,3 +20,4 @@ change_email_parser.add_argument(name='email', type=email(check=True), location=
 
 delete_sn_parser = RequestParser(bundle_errors=True)
 delete_sn_parser.add_argument(name='uuid', type=str, location='form', required=True, nullable=False, help='uuid социальной сети')
+
