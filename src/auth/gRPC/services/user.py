@@ -6,7 +6,7 @@ import grpc
 from auth_pb2 import (UserCreateRequest, UserDeleteMe, UserGetRequest,
                       UserHistory, UserHistoryRequest, UserHistoryResponse,
                       UserResponse, UserUpdateEmailRequest,
-                      UserUpdatePasswordRequest)
+                      UserUpdatePasswordRequest, RoleResponse, UserAddRole, UserRemoveRole)
 from db import no_sql_db as redis_method
 from db.db import get_db
 from jwt.exceptions import InvalidTokenError
@@ -32,11 +32,13 @@ class UserService(auth_pb2_grpc.UserServicer):
             context.set_details('email field required!')
             return UserResponse()
         try:
+            role = crud.role.get(db=db, id=3)
+
             user = crud.user.create(db=db, obj_in={
                 'login': request.login,
                 'email': request.email,
                 'password': request.password
-            })
+            }, role=role)
         except IntegrityError as e:
             logger.exception(e.orig.diag.message_detail)
             context.set_code(grpc.StatusCode.ALREADY_EXISTS)
@@ -84,7 +86,8 @@ class UserService(auth_pb2_grpc.UserServicer):
             context.set_details('user_agent not valid for this token!')
             return UserResponse()
         user = crud.user.get_by(db=db, id=payload['user_id'])
-        return UserResponse(id=str(user.id), login=user.login, email=user.email)
+        roles = [RoleResponse(id=role.id, name=role.name) for role in user.roles]
+        return UserResponse(id=str(user.id), login=user.login, email=user.email, roles=roles)
 
     def GetHistory(self, request: UserHistoryRequest, context):
         db = next(get_db())
@@ -248,7 +251,7 @@ class UserService(auth_pb2_grpc.UserServicer):
             context.set_details(f'password not valid!')
             return UserResponse()
         user = crud.user.update(db=db, db_obj=user, obj_in={
-                                'password': new_password})
+            'password': new_password})
 
         all_auth = redis_method.get_all_auth_user(payload['user_id'])
 
@@ -261,7 +264,7 @@ class UserService(auth_pb2_grpc.UserServicer):
                 payload['expire'], timezone.utc) - datetime.now(timezone.utc)
             redis_method.add_to_blacklist(
                 access_token, exp=exp_for_black_list)
-            
+
             redis_method.del_refresh_token(ref.decode())
         redis_method.del_all_auth_user(payload['user_id'])
         response = UserResponse(
@@ -321,8 +324,125 @@ class UserService(auth_pb2_grpc.UserServicer):
                 payload['expire'], timezone.utc) - datetime.now(timezone.utc)
             redis_method.add_to_blacklist(
                 access_token, exp=exp_for_black_list)
-            
+
             redis_method.del_refresh_token(ref.decode())
         redis_method.del_all_auth_user(payload['user_id'])
         crud.user.remove(db=db, db_obj=user)
         return UserResponse()
+
+    def addRole(self, request: UserAddRole, context):
+        access_token = request.access_token
+        user_agent = request.user_agent
+        role_id = request.role_id
+        user_id = request.user_id
+
+        try:
+            payload = decode_token(token=access_token)
+
+        except InvalidTokenError as e:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return RoleResponse()
+        if redis_method.check_blacklist(access_token):
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return RoleResponse()
+        if user_agent != payload['agent']:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('user_agent not valid for this token!')
+            return RoleResponse()
+        db = next(get_db())
+        if not 'admin' in payload['role']:
+            context.set_code(grpc.StatusCode.PERMISSION_DENIED)
+            context.set_details('user is not admin')
+            return RoleResponse()
+
+        user = crud.user.get(db=db, id=user_id)
+        if user is None:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details('user with id %s not found' % (user_id,))
+            return RoleResponse()
+        role_obj = crud.role.get(db=db, id=role_id)
+        if role_obj is None:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details('role with id %s not found' % (role_id,))
+            return RoleResponse()
+        crud.user.append_role(db=db, user=user, role=role_obj)
+        all_auth = redis_method.get_all_auth_user(user_id=user_id)
+
+        for _, ref in all_auth.items():
+            try:
+                payload = decode_token(token=access_token)
+            except InvalidTokenError as e:
+                pass
+            exp_for_black_list = datetime.fromtimestamp(
+                payload['expire'], timezone.utc) - datetime.now(timezone.utc)
+            redis_method.add_to_blacklist(
+                access_token, exp=exp_for_black_list)
+
+        roles = [RoleResponse(id=role.id, name=role.name) for role in user.roles]
+        return UserResponse(id=str(user.id), login=user.login, email=user.email, roles=roles)
+
+    def removeRole(self, request: UserRemoveRole, context):
+        access_token = request.access_token
+        user_agent = request.user_agent
+        role_id = request.role_id
+        user_id = request.user_id
+
+        try:
+            payload = decode_token(token=access_token)
+
+        except InvalidTokenError as e:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return RoleResponse()
+        if redis_method.check_blacklist(access_token):
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return RoleResponse()
+        if user_agent != payload['agent']:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('user_agent not valid for this token!')
+            return RoleResponse()
+        db = next(get_db())
+        if not 'admin' in payload['role']:
+            context.set_code(grpc.StatusCode.PERMISSION_DENIED)
+            context.set_details('user is not admin')
+            return RoleResponse()
+
+        user = crud.user.get(db=db, id=user_id)
+        role_obj = crud.role.get(db=db, id=role_id)
+        if role_obj is None:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details('role with id %s not found' % (role_id,))
+            return RoleResponse()
+        if role_obj.name == 'admin':
+            context.set_code(grpc.StatusCode.PERMISSION_DENIED)
+            context.set_details('role is admin not removed')
+            return RoleResponse()
+
+        if user is None:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details('user with id %s not found' % (user_id,))
+            return RoleResponse()
+        role = None
+        for r in user.roles:
+            if r.id == role_id:
+                role = r
+                break
+
+        if role:
+            crud.user.remove_role(db=db, user=user, role=role)
+            all_auth = redis_method.get_all_auth_user(user_id=user_id)
+
+            for _, ref in all_auth.items():
+                try:
+                    payload = decode_token(token=access_token)
+                except InvalidTokenError as e:
+                    pass
+                exp_for_black_list = datetime.fromtimestamp(
+                    payload['expire'], timezone.utc) - datetime.now(timezone.utc)
+                redis_method.add_to_blacklist(
+                    access_token, exp=exp_for_black_list)
+        roles = [RoleResponse(id=role.id, name=role.name) for role in user.roles]
+        return UserResponse(id=str(user.id), login=user.login, email=user.email, roles=roles)
