@@ -1,14 +1,12 @@
 from http import HTTPStatus
 
-from google.protobuf import message
-
 from app.api.v1.exceptions import error_handler
-from app.api.v1.proto.auth_pb2 import (UserCreateRequest, UserDeleteMe,
-                                       UserGetRequest, UserHistoryRequest,
+from app.api.v1.proto.auth_pb2 import (UserAddRole, UserAppendSNRequest,
+                                       UserCreateRequest, UserDeleteMe,
+                                       UserDeleteSN, UserGetRequest,
+                                       UserHistoryRequest, UserRemoveRole,
                                        UserUpdateEmailRequest,
-                                       UserUpdatePasswordRequest,
-                                       UserDeleteSN,
-                                       UserAppendSNRequest)
+                                       UserUpdatePasswordRequest)
 from app.api.v1.proto.connector import ConnectServerGRPC
 from flask import jsonify
 from google.protobuf.json_format import MessageToDict
@@ -94,3 +92,25 @@ def append_google_SN_logic(email: str, access_token: str, user_agent: str,
     client.AppendSN(append_SN_data)
 
     return jsonify(status='Success')
+
+
+@error_handler
+def add_role_logic(access_token: str, user_agent: str,
+                   user_id: str, role_id: int):
+    add_role_data = UserAddRole(access_token=access_token,
+                                user_agent=user_agent,
+                                user_id=user_id,
+                                role_id=role_id)
+    request = MessageToDict(client.addRole(add_role_data))
+    return jsonify(request)
+
+
+@error_handler
+def del_role_logic(access_token: str, user_agent: str,
+                   user_id: str, role_id: int):
+    del_role_data = UserRemoveRole(access_token=access_token,
+                                   user_agent=user_agent,
+                                   user_id=user_id,
+                                   role_id=role_id)
+    request = MessageToDict(client.removeRole(del_role_data))
+    return jsonify(request)

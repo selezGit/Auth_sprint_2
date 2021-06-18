@@ -4,7 +4,8 @@ from app import google
 from app.api.v1.models.request_model import (auth_register_parser,
                                              change_email_parser,
                                              change_password_parser,
-                                             delete_sn_parser)
+                                             delete_sn_parser,
+                                             role_parser)
 from app.api.v1.models.response_model import (nested_history_model,
                                               user_create_model,
                                               user_history_model)
@@ -12,7 +13,7 @@ from app.api.v1.services.user import (append_google_SN_logic,
                                       change_email_logic,
                                       change_password_logic, create_user_logic,
                                       delete_sn_logic, delete_user_logic,
-                                      get_user_logic, history_logic)
+                                      get_user_logic, history_logic, add_role_logic, del_role_logic)
 from flask import request, session, url_for
 from flask_restx import Namespace, Resource
 
@@ -63,6 +64,40 @@ class DeleteSN(Resource):
         access_token = request.headers.get('Authorization')
         user_agent = request.headers.get('User-Agent')
         return delete_sn_logic(uuid=uuid, user_agent=user_agent, access_token=access_token)
+
+@user_ns.route('/role', endpoint='user_role')
+class UserRole(Resource):
+    @user_ns.doc(security='access_token')
+    @user_ns.expect(role_parser)
+    @user_ns.response(int(HTTPStatus.OK), 'Success')
+    @user_ns.response(int(HTTPStatus.BAD_REQUEST), 'Validation error.')
+    @user_ns.response(int(HTTPStatus.UNAUTHORIZED), 'Token is invalid or expired.')
+    @user_ns.response(int(HTTPStatus.FORBIDDEN), 'permission denied.')
+    @user_ns.response(int(HTTPStatus.TOO_MANY_REQUESTS), 'Too many requests')
+    @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
+    def post(self):
+        request_data = role_parser.parse_args()
+        access_token = request.headers.get('Authorization')
+        user_agent = request.headers.get('User-Agent')
+        user_id = request_data.get('user_id')
+        role_id = request_data.get('role_id')
+        return add_role_logic(access_token=access_token, user_agent=user_agent, user_id=user_id, role_id=role_id)
+
+    @user_ns.doc(security='access_token')
+    @user_ns.expect(role_parser)
+    @user_ns.response(int(HTTPStatus.OK), 'Success')
+    @user_ns.response(int(HTTPStatus.BAD_REQUEST), 'Validation error.')
+    @user_ns.response(int(HTTPStatus.UNAUTHORIZED), 'Token is invalid or expired.')
+    @user_ns.response(int(HTTPStatus.FORBIDDEN), 'permission denied.')
+    @user_ns.response(int(HTTPStatus.TOO_MANY_REQUESTS), 'Too many requests')
+    @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
+    def delete(self):
+        request_data = role_parser.parse_args()
+        access_token = request.headers.get('Authorization')
+        user_agent = request.headers.get('User-Agent')
+        user_id = request_data.get('user_id')
+        role_id = request_data.get('role_id')
+        return del_role_logic(access_token=access_token, user_agent=user_agent, user_id=user_id, role_id=role_id)
 
 
 @user_ns.route('/append_google_SN', endpoint='auth_append_google_SN')
