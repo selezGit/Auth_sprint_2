@@ -16,11 +16,10 @@ message LoginResponse {
 }
 
 message LoginViaGoogleRequest {
-    string access_token = 1;
-    string social_id = 2;
-    string social_name = 3;
-    string email = 4;
-    string user_agent = 5;
+    string social_id = 1;
+    string social_name = 2;
+    string email = 3;
+    string user_agent = 4;
 }
 
 message LoginViaGoogleResponse {
@@ -73,11 +72,18 @@ message UserCreateRequest {
     string email = 3;
 }
 
+message SocialResponse {
+    string id = 1;
+    string social_name = 2;
+    string email = 3;
+}
+
 message UserResponse {
     string id = 1;
     string login = 2;
     string email = 3;
     repeated RoleResponse roles = 4;
+    repeated SocialResponse social_networks = 5;
 }
 
 message UserGetRequest {
@@ -101,14 +107,33 @@ message UserGetListResponse {
 message UserUpdateEmailRequest {
     string access_token = 1;
     string user_agent = 2;
-    string password = 3;
     string email = 4;
 }
 
 message UserDeleteMe {
     string access_token = 1;
     string user_agent = 2;
-    string password = 3;
+}
+
+message UserDeleteSN {
+    string access_token = 1;
+    string user_agent = 2;
+    string uuid = 3;
+}
+
+
+message UserDeleteSNResponse{
+}
+
+message UserAppendSNRequest {
+    string access_token = 1;
+    string user_agent = 2;
+    string social_id = 3;
+    string social_name = 4;
+    string email = 5;
+}
+
+message UserAppendResponse {
 }
 
 message UserUpdatePasswordRequest {
@@ -136,7 +161,7 @@ message UserHistoryRequest {
 }
 
 message UserHistoryResponse {
-    repeated UserHistory rows = 2;
+    repeated UserHistory rows = 1;
 }
 
 message UserAddRole{
@@ -196,6 +221,8 @@ service User {
     rpc UpdateEmail (UserUpdateEmailRequest) returns (UserResponse);
     rpc UpdatePassword (UserUpdatePasswordRequest) returns (UserResponse);
     rpc DeleteMe (UserDeleteMe) returns (UserResponse);
+    rpc DeleteSN (UserDeleteSN) returns (UserDeleteSNResponse);
+    rpc AppendSN (UserAppendSNRequest) returns (UserAppendResponse);
     rpc addRole (UserAddRole) returns (UserResponse);
     rpc removeRole (UserRemoveRole) returns (UserResponse);
 }

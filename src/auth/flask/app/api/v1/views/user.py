@@ -1,18 +1,19 @@
 from http import HTTPStatus
 
+from app import google
 from app.api.v1.models.request_model import (auth_register_parser,
                                              change_email_parser,
                                              change_password_parser,
-                                             delete_me_parser)
+                                             delete_sn_parser)
 from app.api.v1.models.response_model import (nested_history_model,
                                               user_create_model,
                                               user_history_model)
-from app.api.v1.services.user import (change_email_logic,
+from app.api.v1.services.user import (append_google_SN_logic,
+                                      change_email_logic,
                                       change_password_logic, create_user_logic,
-                                      delete_user_logic, get_user_logic,
-                                      history_logic)
-from flask import request
-from flask.json import jsonify
+                                      delete_sn_logic, delete_user_logic,
+                                      get_user_logic, history_logic)
+from flask import request, session, url_for
 from flask_restx import Namespace, Resource
 
 user_ns = Namespace(name='user', validate=True)
@@ -37,29 +38,61 @@ class User(Resource):
         return create_user_logic(login=login, email=email, password=password)
 
     @user_ns.doc(security='access_token')
-    @user_ns.expect(delete_me_parser)
+    @user_ns.response(int(HTTPStatus.OK), 'Success')
+    @user_ns.response(int(HTTPStatus.UNAUTHORIZED), 'Token is invalid or expired.')
+    @user_ns.response(int(HTTPStatus.TOO_MANY_REQUESTS), 'Too many requests')
+    @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
+    def delete(self):
+        access_token = request.headers.get('Authorization')
+        user_agent = request.headers.get('User-Agent')
+        return delete_user_logic(access_token=access_token, user_agent=user_agent)
+
+
+@user_ns.route('/delete_SN', endpoint='user_delete_SN')
+class DeleteSN(Resource):
+    @user_ns.doc(security='access_token')
+    @user_ns.expect(delete_sn_parser)
     @user_ns.response(int(HTTPStatus.OK), 'Success')
     @user_ns.response(int(HTTPStatus.BAD_REQUEST), 'Validation error.')
     @user_ns.response(int(HTTPStatus.UNAUTHORIZED), 'Token is invalid or expired.')
     @user_ns.response(int(HTTPStatus.TOO_MANY_REQUESTS), 'Too many requests')
     @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
     def delete(self):
-        request_data = delete_me_parser.parse_args()
-        password = request_data.get('password')
+        request_data = delete_sn_parser.parse_args()
+        uuid = request_data.get('uuid')
         access_token = request.headers.get('Authorization')
         user_agent = request.headers.get('User-Agent')
-        return delete_user_logic(access_token=access_token, user_agent=user_agent, password=password)
+        return delete_sn_logic(uuid=uuid, user_agent=user_agent, access_token=access_token)
 
 
-@user_ns.route('/delete_SN', endpoint='user_delete_SN')
-class DeleteSN(Resource):
+@user_ns.route('/append_google_SN', endpoint='auth_append_google_SN')
+class AppendSN(Resource):
     @user_ns.doc(security='access_token')
     @user_ns.response(int(HTTPStatus.OK), 'Success')
-    @user_ns.response(int(HTTPStatus.UNAUTHORIZED), 'Token is invalid or expired.')
+    @user_ns.response(int(HTTPStatus.UNAUTHORIZED), 'email or password does not match')
+    @user_ns.response(int(HTTPStatus.BAD_REQUEST), 'Validation error.')
     @user_ns.response(int(HTTPStatus.TOO_MANY_REQUESTS), 'Too many requests')
     @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
-    def post(self):
-        return jsonify(hello='world')
+    def get(self):
+        resp = google.authorized_response()
+        if resp is None:
+            session['access_token'] = request.headers.get('Authorization')
+            return google.authorize(callback=url_for('api.auth_append_google_SN', _external=True))
+        access_token = session.pop('access_token', None)
+        session['google_token'] = (resp.get('access_token'), '')
+        user_agent = request.headers.get('User-Agent')
+        userinfo = google.get('userinfo')
+        social_id = userinfo.data.get('id')
+        email = userinfo.data.get('email')
+        return append_google_SN_logic(access_token=access_token,
+                                      social_id=str(social_id),
+                                      social_name='google',
+                                      user_agent=user_agent,
+                                      email=email)
+
+    @google.tokengetter
+    def get_google_oauth_token():
+        return session.get('google_token')
 
 
 @user_ns.route('/me', endpoint='user_me')
@@ -107,24 +140,26 @@ class ChangeEmail(Resource):
     @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
     def patch(self):
         request_data = change_email_parser.parse_args()
-        password = request_data.get('password')
         email = request_data.get('email')
         access_token = request.headers.get('Authorization')
         user_agent = request.headers.get('User-Agent')
-        return change_email_logic(password=password,
-                                  email=email,
+        return change_email_logic(email=email,
                                   access_token=access_token,
                                   user_agent=user_agent)
 
 
 @user_ns.route('/history', endpoint='user_history')
 class History(Resource):
-    @user_ns.doc(security='access_token')
-    @user_ns.response(int(HTTPStatus.OK), 'user successfully deleted.', user_history_model)
+    @user_ns.doc(security='access_token', params={
+        'skip': {'in': 'query', 'default': 0},
+        'limit': {'in': 'query', 'default': 50}})
+    @user_ns.response(int(HTTPStatus.OK), 'success', user_history_model)
     @user_ns.response(int(HTTPStatus.UNAUTHORIZED), 'Token is invalid or expired.')
     @user_ns.response(int(HTTPStatus.TOO_MANY_REQUESTS), 'Too many requests')
     @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
     def get(self):
+        skip = int(request.args.get('skip'))
+        limit = int(request.args.get('limit'))
         access_token = request.headers.get('Authorization')
         user_agent = request.headers.get('User-Agent')
-        return history_logic(access_token=access_token, user_agent=user_agent)
+        return history_logic(skip=skip, limit=limit, access_token=access_token, user_agent=user_agent)

@@ -1,10 +1,14 @@
 from http import HTTPStatus
 
+from google.protobuf import message
+
 from app.api.v1.exceptions import error_handler
 from app.api.v1.proto.auth_pb2 import (UserCreateRequest, UserDeleteMe,
                                        UserGetRequest, UserHistoryRequest,
                                        UserUpdateEmailRequest,
-                                       UserUpdatePasswordRequest)
+                                       UserUpdatePasswordRequest,
+                                       UserDeleteSN,
+                                       UserAppendSNRequest)
 from app.api.v1.proto.connector import ConnectServerGRPC
 from flask import jsonify
 from google.protobuf.json_format import MessageToDict
@@ -23,12 +27,20 @@ def create_user_logic(login: str, email: str, password: str):
 
 
 @error_handler
-def delete_user_logic(access_token: str, user_agent: str, password: str):
+def delete_user_logic(access_token: str, user_agent: str):
     delete_user_data = UserDeleteMe(access_token=access_token,
-                                    user_agent=user_agent,
-                                    password=password)
+                                    user_agent=user_agent)
     client.DeleteMe(delete_user_data)
     return jsonify(message='user successfully deleted')
+
+
+@error_handler
+def delete_sn_logic(uuid: str, user_agent: str, access_token: str):
+    delete_sn_data = UserDeleteSN(uuid=uuid,
+                                  user_agent=user_agent,
+                                  access_token=access_token)
+    client.DeleteSN(delete_sn_data)
+    return jsonify(message='social network successfully deleted')
 
 
 @error_handler
@@ -40,9 +52,12 @@ def get_user_logic(access_token: str, user_agent: str):
 
 
 @error_handler
-def history_logic(access_token: str, user_agent: str):
-    history_data = UserHistoryRequest(
-        access_token=access_token, user_agent=user_agent)
+def history_logic(skip: int, limit: int,
+                  access_token: str, user_agent: str):
+    history_data = UserHistoryRequest(skip=skip,
+                                      limit=limit,
+                                      access_token=access_token,
+                                      user_agent=user_agent)
     request = MessageToDict(client.GetHistory(history_data))
     return jsonify(request)
 
@@ -59,11 +74,23 @@ def change_password_logic(old_password: str, new_password: str,
 
 
 @error_handler
-def change_email_logic(password: str, email: str,
+def change_email_logic(email: str,
                        access_token: str, user_agent: str):
     upate_email_data = UserUpdateEmailRequest(access_token=access_token,
                                               user_agent=user_agent,
-                                              password=password,
                                               email=email)
     client.UpdateEmail(upate_email_data)
+    return jsonify(status='Success')
+
+
+@error_handler
+def append_google_SN_logic(email: str, access_token: str, user_agent: str,
+                           social_id: str, social_name: str):
+    append_SN_data = UserAppendSNRequest(email=email,
+                                         access_token=access_token,
+                                         user_agent=user_agent,
+                                         social_id=social_id,
+                                         social_name=social_name)
+    client.AppendSN(append_SN_data)
+
     return jsonify(status='Success')

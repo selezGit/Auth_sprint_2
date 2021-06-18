@@ -34,6 +34,11 @@ class AuthStub(object):
                 request_serializer=auth__pb2.TestTokenRequest.SerializeToString,
                 response_deserializer=auth__pb2.TestTokenResponse.FromString,
                 )
+        self.LoginViaGoogle = channel.unary_unary(
+                '/Auth/LoginViaGoogle',
+                request_serializer=auth__pb2.LoginViaGoogleRequest.SerializeToString,
+                response_deserializer=auth__pb2.LoginViaGoogleResponse.FromString,
+                )
 
 
 class AuthServicer(object):
@@ -63,6 +68,12 @@ class AuthServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def LoginViaGoogle(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_AuthServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -85,6 +96,11 @@ def add_AuthServicer_to_server(servicer, server):
                     servicer.TestToken,
                     request_deserializer=auth__pb2.TestTokenRequest.FromString,
                     response_serializer=auth__pb2.TestTokenResponse.SerializeToString,
+            ),
+            'LoginViaGoogle': grpc.unary_unary_rpc_method_handler(
+                    servicer.LoginViaGoogle,
+                    request_deserializer=auth__pb2.LoginViaGoogleRequest.FromString,
+                    response_serializer=auth__pb2.LoginViaGoogleResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -164,6 +180,23 @@ class Auth(object):
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
+    @staticmethod
+    def LoginViaGoogle(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Auth/LoginViaGoogle',
+            auth__pb2.LoginViaGoogleRequest.SerializeToString,
+            auth__pb2.LoginViaGoogleResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
 
 class UserStub(object):
     """Missing associated documentation comment in .proto file."""
@@ -208,6 +241,16 @@ class UserStub(object):
                 '/User/DeleteMe',
                 request_serializer=auth__pb2.UserDeleteMe.SerializeToString,
                 response_deserializer=auth__pb2.UserResponse.FromString,
+                )
+        self.DeleteSN = channel.unary_unary(
+                '/User/DeleteSN',
+                request_serializer=auth__pb2.UserDeleteSN.SerializeToString,
+                response_deserializer=auth__pb2.UserDeleteSNResponse.FromString,
+                )
+        self.AppendSN = channel.unary_unary(
+                '/User/AppendSN',
+                request_serializer=auth__pb2.UserAppendSNRequest.SerializeToString,
+                response_deserializer=auth__pb2.UserAppendResponse.FromString,
                 )
 
 
@@ -256,6 +299,18 @@ class UserServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DeleteSN(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AppendSN(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_UserServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -293,6 +348,16 @@ def add_UserServicer_to_server(servicer, server):
                     servicer.DeleteMe,
                     request_deserializer=auth__pb2.UserDeleteMe.FromString,
                     response_serializer=auth__pb2.UserResponse.SerializeToString,
+            ),
+            'DeleteSN': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteSN,
+                    request_deserializer=auth__pb2.UserDeleteSN.FromString,
+                    response_serializer=auth__pb2.UserDeleteSNResponse.SerializeToString,
+            ),
+            'AppendSN': grpc.unary_unary_rpc_method_handler(
+                    servicer.AppendSN,
+                    request_deserializer=auth__pb2.UserAppendSNRequest.FromString,
+                    response_serializer=auth__pb2.UserAppendResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -420,5 +485,39 @@ class User(object):
         return grpc.experimental.unary_unary(request, target, '/User/DeleteMe',
             auth__pb2.UserDeleteMe.SerializeToString,
             auth__pb2.UserResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def DeleteSN(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/User/DeleteSN',
+            auth__pb2.UserDeleteSN.SerializeToString,
+            auth__pb2.UserDeleteSNResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AppendSN(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/User/AppendSN',
+            auth__pb2.UserAppendSNRequest.SerializeToString,
+            auth__pb2.UserAppendResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

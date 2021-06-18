@@ -13,9 +13,6 @@ from utils.bulk_helper import delete_doc, generate_doc
 from utils.wait_for_es import wait_es
 from utils.wait_for_redis import wait_redis
 
-SERVICE_URL = 'http://127.0.0.1:8000'
-
-
 @pytest.fixture(scope='function')
 async def es_client():
     await wait_es()
@@ -38,12 +35,18 @@ async def redis_client():
     yield client
     client.close()
 
+@pytest.fixture(scope='function')
+async def auth_redis_client():
+    await wait_redis()
+    client = await aioredis.create_redis_pool((SETTINGS.auth_redis_host, SETTINGS.auth_redis_port), minsize=10, maxsize=20)
+    yield client
+    client.close()
+
 
 @pytest.fixture
 async def make_get_request(session, redis_client):
     async def inner(method: str, params: dict = None, cleaning_redis: bool = True) -> HTTPResponse:
         params = params or {}
-        # в боевых системах старайтесь так не делать!
         url = SETTINGS.back_host + '/api/v1' + method
         start = time.time()
         async with session.get(url, params=params) as response:
@@ -59,6 +62,27 @@ async def make_get_request(session, redis_client):
                 resp_speed=(time.time()-start))
 
     return inner
+
+@pytest.fixture
+async def make_auth_get_request(session, auth_redis_client):
+    async def inner(method: str, params: dict = None, cleaning_redis: bool = True) -> HTTPResponse:
+        params = params or {}
+        url = SETTINGS.auth_host + '/api/v1' + method
+        start = time.time()
+        async with session.get(url, params=params) as response:
+            #  очищаем кэш redis
+            if cleaning_redis:
+                await auth_redis_client.delete(str(response.url))
+
+            return HTTPResponse(
+                body=await response.json(),
+                headers=response.headers,
+                status=response.status,
+                url=response.url,
+                resp_speed=(time.time()-start))
+
+    return inner
+
 
 
 @pytest.fixture(scope='function')

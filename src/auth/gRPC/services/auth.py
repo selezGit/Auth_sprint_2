@@ -235,10 +235,6 @@ class AuthService(auth_pb2_grpc.AuthServicer):
 
     def LoginViaGoogle(self, request: LoginViaGoogleRequest, context):
 
-        if request.access_token is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details('access_token field required!')
-            return LoginViaGoogleResponse()
         if request.social_id is None:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details('social_id field required!')
@@ -257,7 +253,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             return LoginViaGoogleResponse()
         db = next(get_db())
 
-        user_id = crud.socical_account.get_by_social_id(db=db, social_id=request.social_id,
+        user_id = crud.social_account.get_by_social_id(db=db, social_id=request.social_id,
                                                         social_name=request.social_name)
         if user_id:
             user_id = user_id[0]
@@ -266,10 +262,11 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             try:
                 user = crud.user.create_social_account(
                     db=db, email=request.email)
-                social = crud.socical_account.create(db=db, obj_in={
+                social = crud.social_account.create(db=db, obj_in={
                     'user_id': user.id,
                     'social_id': request.social_id,
-                    'social_name': request.social_name
+                    'social_name': request.social_name,
+                    'email': request.email
                 })
                 user_id = user.id
             except IntegrityError as e:

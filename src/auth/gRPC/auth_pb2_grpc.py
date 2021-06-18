@@ -242,16 +242,6 @@ class UserStub(object):
                 request_serializer=auth__pb2.UserDeleteMe.SerializeToString,
                 response_deserializer=auth__pb2.UserResponse.FromString,
                 )
-        self.addRole = channel.unary_unary(
-                '/User/addRole',
-                request_serializer=auth__pb2.UserAddRole.SerializeToString,
-                response_deserializer=auth__pb2.UserResponse.FromString,
-                )
-        self.removeRole = channel.unary_unary(
-                '/User/removeRole',
-                request_serializer=auth__pb2.UserRemoveRole.SerializeToString,
-                response_deserializer=auth__pb2.UserResponse.FromString,
-                )
 
 
 class UserServicer(object):
@@ -299,18 +289,6 @@ class UserServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def addRole(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def removeRole(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_UserServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -347,16 +325,6 @@ def add_UserServicer_to_server(servicer, server):
             'DeleteMe': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteMe,
                     request_deserializer=auth__pb2.UserDeleteMe.FromString,
-                    response_serializer=auth__pb2.UserResponse.SerializeToString,
-            ),
-            'addRole': grpc.unary_unary_rpc_method_handler(
-                    servicer.addRole,
-                    request_deserializer=auth__pb2.UserAddRole.FromString,
-                    response_serializer=auth__pb2.UserResponse.SerializeToString,
-            ),
-            'removeRole': grpc.unary_unary_rpc_method_handler(
-                    servicer.removeRole,
-                    request_deserializer=auth__pb2.UserRemoveRole.FromString,
                     response_serializer=auth__pb2.UserResponse.SerializeToString,
             ),
     }
@@ -485,199 +453,5 @@ class User(object):
         return grpc.experimental.unary_unary(request, target, '/User/DeleteMe',
             auth__pb2.UserDeleteMe.SerializeToString,
             auth__pb2.UserResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def addRole(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/User/addRole',
-            auth__pb2.UserAddRole.SerializeToString,
-            auth__pb2.UserResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def removeRole(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/User/removeRole',
-            auth__pb2.UserRemoveRole.SerializeToString,
-            auth__pb2.UserResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-
-class RoleStub(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def __init__(self, channel):
-        """Constructor.
-
-        Args:
-            channel: A grpc.Channel.
-        """
-        self.Get = channel.unary_unary(
-                '/Role/Get',
-                request_serializer=auth__pb2.RoleGetList.SerializeToString,
-                response_deserializer=auth__pb2.RoleResponseList.FromString,
-                )
-        self.Create = channel.unary_unary(
-                '/Role/Create',
-                request_serializer=auth__pb2.RoleCreate.SerializeToString,
-                response_deserializer=auth__pb2.RoleResponse.FromString,
-                )
-        self.Delete = channel.unary_unary(
-                '/Role/Delete',
-                request_serializer=auth__pb2.RoleRemove.SerializeToString,
-                response_deserializer=auth__pb2.RoleResponse.FromString,
-                )
-        self.Update = channel.unary_unary(
-                '/Role/Update',
-                request_serializer=auth__pb2.RoleUpdate.SerializeToString,
-                response_deserializer=auth__pb2.RoleResponse.FromString,
-                )
-
-
-class RoleServicer(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def Get(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def Create(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def Delete(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def Update(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-
-def add_RoleServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-            'Get': grpc.unary_unary_rpc_method_handler(
-                    servicer.Get,
-                    request_deserializer=auth__pb2.RoleGetList.FromString,
-                    response_serializer=auth__pb2.RoleResponseList.SerializeToString,
-            ),
-            'Create': grpc.unary_unary_rpc_method_handler(
-                    servicer.Create,
-                    request_deserializer=auth__pb2.RoleCreate.FromString,
-                    response_serializer=auth__pb2.RoleResponse.SerializeToString,
-            ),
-            'Delete': grpc.unary_unary_rpc_method_handler(
-                    servicer.Delete,
-                    request_deserializer=auth__pb2.RoleRemove.FromString,
-                    response_serializer=auth__pb2.RoleResponse.SerializeToString,
-            ),
-            'Update': grpc.unary_unary_rpc_method_handler(
-                    servicer.Update,
-                    request_deserializer=auth__pb2.RoleUpdate.FromString,
-                    response_serializer=auth__pb2.RoleResponse.SerializeToString,
-            ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-            'Role', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
- # This class is part of an EXPERIMENTAL API.
-class Role(object):
-    """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def Get(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Role/Get',
-            auth__pb2.RoleGetList.SerializeToString,
-            auth__pb2.RoleResponseList.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def Create(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Role/Create',
-            auth__pb2.RoleCreate.SerializeToString,
-            auth__pb2.RoleResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def Delete(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Role/Delete',
-            auth__pb2.RoleRemove.SerializeToString,
-            auth__pb2.RoleResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def Update(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Role/Update',
-            auth__pb2.RoleUpdate.SerializeToString,
-            auth__pb2.RoleResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

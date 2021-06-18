@@ -3,9 +3,9 @@ from datetime import datetime, timezone
 import auth_pb2_grpc
 import crud
 import grpc
-from auth_pb2 import (UserCreateRequest, UserDeleteMe, UserGetRequest,
+from auth_pb2 import (UserAppendResponse, UserAppendSNRequest,UserDeleteSN, UserDeleteSNResponse, UserCreateRequest, UserDeleteMe, UserGetRequest,
                       UserHistory, UserHistoryRequest, UserHistoryResponse,
-                      UserResponse, UserUpdateEmailRequest,
+                      UserResponse, UserDeleteSNResponse,UserUpdateEmailRequest,
                       UserUpdatePasswordRequest, RoleResponse, UserAddRole, UserRemoveRole)
 from db import no_sql_db as redis_method
 from db.db import get_db
@@ -87,7 +87,13 @@ class UserService(auth_pb2_grpc.UserServicer):
             return UserResponse()
         user = crud.user.get_by(db=db, id=payload['user_id'])
         roles = [RoleResponse(id=role.id, name=role.name) for role in user.roles]
+        user_socials = crud.social_account.get_social(
+            db=db, user_id=payload['user_id'])
         return UserResponse(id=str(user.id), login=user.login, email=user.email, roles=roles)
+        user_socials = crud.social_account.get_social(
+            db=db, user_id=payload['user_id'])
+        return UserResponse(id=str(user.id), login=user.login, email=user.email,
+                            social_networks=[{'id': str(social.id), 'social_name': social.social_name, 'email': social.email} for social in user_socials])
 
     def GetHistory(self, request: UserHistoryRequest, context):
         db = next(get_db())
@@ -155,14 +161,9 @@ class UserService(auth_pb2_grpc.UserServicer):
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details('email field required!')
             return UserResponse()
-        if request.password is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details('password field required!')
-            return UserResponse()
         access_token = request.access_token
         user_agent = request.user_agent
         email = request.email
-        password = request.password
         try:
             payload = decode_token(token=access_token)
 
@@ -186,10 +187,6 @@ class UserService(auth_pb2_grpc.UserServicer):
             return UserResponse()
 
         user = crud.user.get_by(db=db, id=payload['user_id'])
-        if not crud.user.check_password(user=user, password=password):
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details(f'password not valid!')
-            return UserResponse()
 
         try:
             user = crud.user.update(
@@ -246,6 +243,12 @@ class UserService(auth_pb2_grpc.UserServicer):
             context.set_details('user_agent not valid for this token!')
             return UserResponse()
         user = crud.user.get_by(db=db, id=payload['user_id'])
+
+        if user.password_hash is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('method not allowed for this user type')
+            return UserResponse()
+
         if not crud.user.check_password(user=user, password=old_password):
             context.set_code(grpc.StatusCode.UNAUTHENTICATED)
             context.set_details(f'password not valid!')
@@ -275,7 +278,6 @@ class UserService(auth_pb2_grpc.UserServicer):
         db = next(get_db())
         access_token = request.access_token
         user_agent = request.user_agent
-        password = request.password
         if access_token is None:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details('access_token field required!')
@@ -283,10 +285,6 @@ class UserService(auth_pb2_grpc.UserServicer):
         if user_agent is None:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details('user_agent field required!')
-            return UserResponse()
-        if password is None:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details('password field required!')
             return UserResponse()
         try:
             payload = decode_token(token=access_token)
@@ -308,11 +306,6 @@ class UserService(auth_pb2_grpc.UserServicer):
             context.set_details('user_agent not valid for this token!')
             return UserResponse()
         user = crud.user.get_by(db=db, id=payload['user_id'])
-        if not crud.user.check_password(user=user, password=password):
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details(f'password not valid!')
-            return UserResponse()
-
         all_auth = redis_method.get_all_auth_user(payload['user_id'])
 
         for _, ref in all_auth.items():
@@ -329,6 +322,139 @@ class UserService(auth_pb2_grpc.UserServicer):
         redis_method.del_all_auth_user(payload['user_id'])
         crud.user.remove(db=db, db_obj=user)
         return UserResponse()
+
+    def DeleteSN(self, request: UserDeleteSN, context):
+        access_token = request.access_token
+        user_agent = request.user_agent
+        social_uuid = request.uuid
+        if access_token is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('access_token field required!')
+            return UserDeleteSNResponse()
+        if user_agent is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('user_agent field required!')
+            return UserDeleteSNResponse()
+        if social_uuid is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('uuid field required!')
+            return UserDeleteSNResponse()
+
+        try:
+            payload = decode_token(token=access_token)
+
+        except InvalidTokenError as e:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserDeleteSNResponse()
+        if redis_method.check_blacklist(access_token):
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserDeleteSNResponse()
+        if not check_expire(payload['expire']):
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserDeleteSNResponse()
+        if user_agent != payload['agent']:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('user_agent not valid for this token!')
+            return UserDeleteSNResponse()
+        db = next(get_db())
+
+        social_accounts_count = crud.social_account.get_count_social_ids(
+            db=db, user_id=payload['user_id'])
+        user = crud.user.get_by(db=db, id=payload['user_id'])
+
+        if social_accounts_count == 0:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('incorrect uuid, social network not found')
+            return UserDeleteSNResponse()
+        elif social_accounts_count == 1 and user.login is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details(
+                'to unlink social network, you need more than one SN')
+            return UserDeleteSNResponse()
+
+        crud.social_account.remove(
+            db=db, db_obj=crud.social_account.get_by(db=db, id=social_uuid))
+        return UserDeleteSNResponse()
+
+    def AppendSN(self, request: UserAppendSNRequest, context):
+
+        social_id = request.social_id
+        social_name = request.social_name
+        access_token = request.access_token
+        user_agent = request.user_agent
+        email = request.email
+
+        if social_id is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('social_id field required!')
+            return UserAppendResponse()
+        if social_name is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('social_name field required!')
+            return UserAppendResponse()
+        if user_agent is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('user_agent field required!')
+            return UserAppendResponse()
+        if access_token is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('access_token field required!')
+            return UserAppendResponse()
+        if email is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('email field required!')
+            return UserAppendResponse()
+        try:
+            logger.info(access_token)
+            payload = decode_token(token=access_token)
+
+        except InvalidTokenError as e:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserAppendResponse()
+        if redis_method.check_blacklist(access_token):
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserAppendResponse()
+        if not check_expire(payload['expire']):
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserAppendResponse()
+        if user_agent != payload['agent']:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('user_agent not valid for this token!')
+            return UserAppendResponse()
+        db = next(get_db())
+
+        if crud.social_account.get_by_social_id(db=db, social_id=social_id,
+                                                social_name=social_name):
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('this social network already binded')
+            return UserAppendResponse()
+
+        try:
+
+            social = crud.social_account.create(db=db, obj_in={
+                'user_id': payload['user_id'],
+                'social_id': social_id,
+                'social_name': social_name,
+                'email': email
+            })
+
+        except IntegrityError as e:
+            logger.exception(e.orig.diag.message_detail)
+            context.set_code(grpc.StatusCode.ALREADY_EXISTS)
+            context.set_details(e.orig.diag.message_detail)
+            return UserAppendResponse()
+        except Exception as e:
+            logger.exception(e)
+            context.set_code(grpc.StatusCode.WARNING)
+            context.set_details()
+            return UserAppendResponse()
+        return UserDeleteSNResponse()
 
     def addRole(self, request: UserAddRole, context):
         access_token = request.access_token

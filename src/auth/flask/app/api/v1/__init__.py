@@ -2,7 +2,7 @@ from app.api.v1.views.auth import auth_ns
 from app.api.v1.views.user import user_ns
 from flask import Blueprint
 from flask_restx import Api
-
+from app import config
 api_bp = Blueprint('api', __name__, url_prefix='/api/v1')
 
 authorizations = {
@@ -22,7 +22,6 @@ api = Api(
     title='API Auth with JWT token',
     description='Welcome to the Swagger UI documentation site!',
     authorizations=authorizations,
-    security=['apiKey', {'oauth2': 'read'}]
 )
 
 api.add_namespace(auth_ns, path='/auth')

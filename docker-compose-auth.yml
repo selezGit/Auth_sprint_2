@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  flask:
+  auth_api:
     build: 
       context: src/auth/flask
     ports:
