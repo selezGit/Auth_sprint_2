@@ -43,7 +43,9 @@ CREATE TABLE content.film_work (
     certificate text,
     file_path character varying(100),
     rating double precision,
-    type_id uuid
+    type_id uuid,
+    is_adult boolean NOT NULL,
+    is_premium boolean NOT NULL
 );
 
 
