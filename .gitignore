@@ -139,4 +139,4 @@ dmypy.json
 ./tests/functional/.es-data-test/*
 
 ./src/auth/gRPC/jpyter/*
-test-docker-compose.yml
+./test-docker-compose.yml
