@@ -3,11 +3,11 @@ from datetime import datetime, timezone
 import auth_pb2_grpc
 import crud
 import grpc
-from auth_pb2 import (UserCreateRequest, UserDeleteMe, UserGetRequest,
-                      UserHistory, UserHistoryRequest, UserHistoryResponse,
-                      UserResponse, UserUpdateEmailRequest,
-                      UserUpdatePasswordRequest, UserDeleteSN, UserDeleteSNResponse)
-from crud import social_account
+from auth_pb2 import (UserAppendResponse, UserAppendSNRequest,
+                      UserCreateRequest, UserDeleteMe, UserDeleteSN,
+                      UserDeleteSNResponse, UserGetRequest, UserHistory,
+                      UserHistoryRequest, UserHistoryResponse, UserResponse,
+                      UserUpdateEmailRequest, UserUpdatePasswordRequest)
 from db import no_sql_db as redis_method
 from db.db import get_db
 from jwt.exceptions import InvalidTokenError
@@ -262,7 +262,7 @@ class UserService(auth_pb2_grpc.UserServicer):
                 payload['expire'], timezone.utc) - datetime.now(timezone.utc)
             redis_method.add_to_blacklist(
                 access_token, exp=exp_for_black_list)
-            
+
             redis_method.del_refresh_token(ref.decode())
         redis_method.del_all_auth_user(payload['user_id'])
         response = UserResponse(
@@ -322,7 +322,7 @@ class UserService(auth_pb2_grpc.UserServicer):
                 payload['expire'], timezone.utc) - datetime.now(timezone.utc)
             redis_method.add_to_blacklist(
                 access_token, exp=exp_for_black_list)
-            
+
             redis_method.del_refresh_token(ref.decode())
         redis_method.del_all_auth_user(payload['user_id'])
         crud.user.remove(db=db, db_obj=user)
@@ -365,16 +365,93 @@ class UserService(auth_pb2_grpc.UserServicer):
             context.set_details('user_agent not valid for this token!')
             return UserDeleteSNResponse()
         db = next(get_db())
+
+        social_accounts_count = crud.social_account.get_count_social_ids(
+            db=db, user_id=payload['user_id'])
+        user = crud.user.get_by(db=db, id=payload['user_id'])
+
         
-        social_accounts_count = crud.social_account.get_count_social_ids(db=db, uuid=social_uuid)
         if social_accounts_count == 0:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details('incorrect uuid, social network not found')
             return UserDeleteSNResponse()
-        elif social_accounts_count == 1:
+        elif social_accounts_count == 1 and user.login is None:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details('to unlink social network, you need more than one SN')
+            context.set_details(
+                'to unlink social network, you need more than one SN')
             return UserDeleteSNResponse()
-        
-        crud.social_account.remove(db=db, db_obj=crud.social_account.get_by(db=db, id=social_uuid))
+
+        crud.social_account.remove(
+            db=db, db_obj=crud.social_account.get_by(db=db, id=social_uuid))
+        return UserDeleteSNResponse()
+
+    def AppendSN(self, request: UserAppendSNRequest, context):
+
+        social_id = request.social_id
+        social_name = request.social_name
+        access_token = request.access_token
+        user_agent = request.user_agent
+
+        if social_id is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('social_id field required!')
+            return UserAppendResponse()
+        if social_name is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('social_name field required!')
+            return UserAppendResponse()
+        if user_agent is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('user_agent field required!')
+            return UserAppendResponse()
+        if access_token is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('access_token field required!')
+            return UserAppendResponse()
+        try:
+            logger.info(access_token)
+            payload = decode_token(token=access_token)
+
+        except InvalidTokenError as e:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserAppendResponse()
+        if redis_method.check_blacklist(access_token):
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserAppendResponse()
+        if not check_expire(payload['expire']):
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('access_token not valid!')
+            return UserAppendResponse()
+        if user_agent != payload['agent']:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details('user_agent not valid for this token!')
+            return UserAppendResponse()
+        db = next(get_db())
+
+        if crud.social_account.get_by_social_id(db=db, social_id=social_id,
+                                                social_name=social_name):
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('this social network already binded')
+            return UserAppendResponse()
+
+        try:
+
+            social = crud.social_account.create(db=db, obj_in={
+                'user_id': payload['user_id'],
+                'social_id': social_id,
+                'social_name': social_name
+            })
+
+        except IntegrityError as e:
+            logger.exception(e.orig.diag.message_detail)
+            context.set_code(grpc.StatusCode.ALREADY_EXISTS)
+            context.set_details(e.orig.diag.message_detail)
+            return UserAppendResponse()
+        except Exception as e:
+            logger.exception(e)
+            context.set_code(grpc.StatusCode.WARNING)
+            context.set_details()
+            return UserAppendResponse()
         return UserDeleteSNResponse()
