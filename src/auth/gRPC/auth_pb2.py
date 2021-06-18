@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\nauth.proto\"C\n\x0cLoginRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x12\n\nuser_agent\x18\x03 \x01(\t\"d\n\rLoginResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"b\n\x15LoginViaGoogleRequest\x12\x11\n\tsocial_id\x18\x01 \x01(\t\x12\x13\n\x0bsocial_name\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"m\n\x16LoginViaGoogleResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"@\n\x13RefreshTokenRequest\x12\x15\n\rrefresh_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"k\n\x14RefreshTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"9\n\rLogoutRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x10\n\x0eLogoutResponse\"<\n\x10TestTokenRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x13\n\x11TestTokenResponse\"C\n\x11UserCreateRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\"8\n\x0cUserResponse\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05login\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\":\n\x0eUserGetRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"[\n\x12UserGetListRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0c\n\x04skip\x18\x03 \x01(\x05\x12\r\n\x05limit\x18\x04 \x01(\x05\"P\n\x13UserGetListResponse\x12\x0c\n\x04skip\x18\x01 \x01(\x05\x12\r\n\x05limit\x18\x02 \x01(\x05\x12\x1c\n\x05users\x18\x03 \x03(\x0b\x32\r.UserResponse\"c\n\x16UserUpdateEmailRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\r\n\x05\x65mail\x18\x04 \x01(\t\"J\n\x0cUserDeleteMe\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"F\n\x0cUserDeleteSN\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0c\n\x04uuid\x18\x03 \x01(\t\"\x16\n\x14UserDeleteSNResponse\"q\n\x19UserUpdatePasswordRequest\x12\x14\n\x0cold_password\x18\x01 \x01(\t\x12\x14\n\x0cnew_password\x18\x02 \x01(\t\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x03 \x01(\t\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"T\n\x0bUserHistory\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65vice_type\x18\x03 \x01(\t\x12\x0e\n\x06\x61\x63tive\x18\x04 \x01(\x08\"[\n\x12UserHistoryRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0c\n\x04skip\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"1\n\x13UserHistoryResponse\x12\x1a\n\x04rows\x18\x02 \x03(\x0b\x32\x0c.UserHistory2\x8d\x02\n\x04\x41uth\x12&\n\x05Login\x12\r.LoginRequest\x1a\x0e.LoginResponse\x12;\n\x0cRefreshToken\x12\x14.RefreshTokenRequest\x1a\x15.RefreshTokenResponse\x12)\n\x06Logout\x12\x0e.LogoutRequest\x1a\x0f.LogoutResponse\x12\x32\n\tTestToken\x12\x11.TestTokenRequest\x1a\x12.TestTokenResponse\x12\x41\n\x0eLoginViaGoogle\x12\x16.LoginViaGoogleRequest\x1a\x17.LoginViaGoogleResponse2\x99\x03\n\x04User\x12%\n\x03Get\x12\x0f.UserGetRequest\x1a\r.UserResponse\x12\x34\n\x07GetList\x12\x13.UserGetListRequest\x1a\x14.UserGetListResponse\x12\x37\n\nGetHistory\x12\x13.UserHistoryRequest\x1a\x14.UserHistoryResponse\x12+\n\x06\x43reate\x12\x12.UserCreateRequest\x1a\r.UserResponse\x12\x35\n\x0bUpdateEmail\x12\x17.UserUpdateEmailRequest\x1a\r.UserResponse\x12;\n\x0eUpdatePassword\x12\x1a.UserUpdatePasswordRequest\x1a\r.UserResponse\x12(\n\x08\x44\x65leteMe\x12\r.UserDeleteMe\x1a\r.UserResponse\x12\x30\n\x08\x44\x65leteSN\x12\r.UserDeleteSN\x1a\x15.UserDeleteSNResponseb\x06proto3'
+  serialized_pb=b'\n\nauth.proto\"C\n\x0cLoginRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x12\n\nuser_agent\x18\x03 \x01(\t\"d\n\rLoginResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"b\n\x15LoginViaGoogleRequest\x12\x11\n\tsocial_id\x18\x01 \x01(\t\x12\x13\n\x0bsocial_name\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"m\n\x16LoginViaGoogleResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"@\n\x13RefreshTokenRequest\x12\x15\n\rrefresh_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"k\n\x14RefreshTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_in\x18\x03 \x01(\t\x12\x12\n\ntoken_type\x18\x04 \x01(\t\"9\n\rLogoutRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x10\n\x0eLogoutResponse\"<\n\x10TestTokenRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"\x13\n\x11TestTokenResponse\"C\n\x11UserCreateRequest\x12\r\n\x05login\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\"8\n\x0cUserResponse\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05login\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\":\n\x0eUserGetRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\"[\n\x12UserGetListRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0c\n\x04skip\x18\x03 \x01(\x05\x12\r\n\x05limit\x18\x04 \x01(\x05\"P\n\x13UserGetListResponse\x12\x0c\n\x04skip\x18\x01 \x01(\x05\x12\r\n\x05limit\x18\x02 \x01(\x05\x12\x1c\n\x05users\x18\x03 \x03(\x0b\x32\r.UserResponse\"c\n\x16UserUpdateEmailRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\r\n\x05\x65mail\x18\x04 \x01(\t\"J\n\x0cUserDeleteMe\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"F\n\x0cUserDeleteSN\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x0c\n\x04uuid\x18\x03 \x01(\t\"\x16\n\x14UserDeleteSNResponse\"v\n\x13UserAppendSNRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x11\n\tsocial_id\x18\x03 \x01(\t\x12\x13\n\x0bsocial_name\x18\x04 \x01(\t\x12\r\n\x05\x65mail\x18\x05 \x01(\t\"\x14\n\x12UserAppendResponse\"q\n\x19UserUpdatePasswordRequest\x12\x14\n\x0cold_password\x18\x01 \x01(\t\x12\x14\n\x0cnew_password\x18\x02 \x01(\t\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x03 \x01(\t\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"T\n\x0bUserHistory\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12\x12\n\nuser_agent\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65vice_type\x18\x03 \x01(\t\x12\x0e\n\x06\x61\x63tive\x18\x04 \x01(\x08\"[\n\x12UserHistoryRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0c\n\x04skip\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\x12\x12\n\nuser_agent\x18\x04 \x01(\t\"1\n\x13UserHistoryResponse\x12\x1a\n\x04rows\x18\x02 \x03(\x0b\x32\x0c.UserHistory2\x8d\x02\n\x04\x41uth\x12&\n\x05Login\x12\r.LoginRequest\x1a\x0e.LoginResponse\x12;\n\x0cRefreshToken\x12\x14.RefreshTokenRequest\x1a\x15.RefreshTokenResponse\x12)\n\x06Logout\x12\x0e.LogoutRequest\x1a\x0f.LogoutResponse\x12\x32\n\tTestToken\x12\x11.TestTokenRequest\x1a\x12.TestTokenResponse\x12\x41\n\x0eLoginViaGoogle\x12\x16.LoginViaGoogleRequest\x1a\x17.LoginViaGoogleResponse2\xd0\x03\n\x04User\x12%\n\x03Get\x12\x0f.UserGetRequest\x1a\r.UserResponse\x12\x34\n\x07GetList\x12\x13.UserGetListRequest\x1a\x14.UserGetListResponse\x12\x37\n\nGetHistory\x12\x13.UserHistoryRequest\x1a\x14.UserHistoryResponse\x12+\n\x06\x43reate\x12\x12.UserCreateRequest\x1a\r.UserResponse\x12\x35\n\x0bUpdateEmail\x12\x17.UserUpdateEmailRequest\x1a\r.UserResponse\x12;\n\x0eUpdatePassword\x12\x1a.UserUpdatePasswordRequest\x1a\r.UserResponse\x12(\n\x08\x44\x65leteMe\x12\r.UserDeleteMe\x1a\r.UserResponse\x12\x30\n\x08\x44\x65leteSN\x12\r.UserDeleteSN\x1a\x15.UserDeleteSNResponse\x12\x35\n\x08\x41ppendSN\x12\x14.UserAppendSNRequest\x1a\x13.UserAppendResponseb\x06proto3'
 )
 
 
@@ -850,6 +850,91 @@ _USERDELETESNRESPONSE = _descriptor.Descriptor(
 )
 
 
+_USERAPPENDSNREQUEST = _descriptor.Descriptor(
+  name='UserAppendSNRequest',
+  full_name='UserAppendSNRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='access_token', full_name='UserAppendSNRequest.access_token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_agent', full_name='UserAppendSNRequest.user_agent', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='social_id', full_name='UserAppendSNRequest.social_id', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='social_name', full_name='UserAppendSNRequest.social_name', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='email', full_name='UserAppendSNRequest.email', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1366,
+  serialized_end=1484,
+)
+
+
+_USERAPPENDRESPONSE = _descriptor.Descriptor(
+  name='UserAppendResponse',
+  full_name='UserAppendResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1486,
+  serialized_end=1506,
+)
+
+
 _USERUPDATEPASSWORDREQUEST = _descriptor.Descriptor(
   name='UserUpdatePasswordRequest',
   full_name='UserUpdatePasswordRequest',
@@ -898,8 +983,8 @@ _USERUPDATEPASSWORDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1366,
-  serialized_end=1479,
+  serialized_start=1508,
+  serialized_end=1621,
 )
 
 
@@ -951,8 +1036,8 @@ _USERHISTORY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1481,
-  serialized_end=1565,
+  serialized_start=1623,
+  serialized_end=1707,
 )
 
 
@@ -1004,8 +1089,8 @@ _USERHISTORYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1567,
-  serialized_end=1658,
+  serialized_start=1709,
+  serialized_end=1800,
 )
 
 
@@ -1036,8 +1121,8 @@ _USERHISTORYRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1660,
-  serialized_end=1709,
+  serialized_start=1802,
+  serialized_end=1851,
 )
 
 _USERGETLISTRESPONSE.fields_by_name['users'].message_type = _USERRESPONSE
@@ -1061,6 +1146,8 @@ DESCRIPTOR.message_types_by_name['UserUpdateEmailRequest'] = _USERUPDATEEMAILREQ
 DESCRIPTOR.message_types_by_name['UserDeleteMe'] = _USERDELETEME
 DESCRIPTOR.message_types_by_name['UserDeleteSN'] = _USERDELETESN
 DESCRIPTOR.message_types_by_name['UserDeleteSNResponse'] = _USERDELETESNRESPONSE
+DESCRIPTOR.message_types_by_name['UserAppendSNRequest'] = _USERAPPENDSNREQUEST
+DESCRIPTOR.message_types_by_name['UserAppendResponse'] = _USERAPPENDRESPONSE
 DESCRIPTOR.message_types_by_name['UserUpdatePasswordRequest'] = _USERUPDATEPASSWORDREQUEST
 DESCRIPTOR.message_types_by_name['UserHistory'] = _USERHISTORY
 DESCRIPTOR.message_types_by_name['UserHistoryRequest'] = _USERHISTORYREQUEST
@@ -1200,6 +1287,20 @@ UserDeleteSNResponse = _reflection.GeneratedProtocolMessageType('UserDeleteSNRes
   })
 _sym_db.RegisterMessage(UserDeleteSNResponse)
 
+UserAppendSNRequest = _reflection.GeneratedProtocolMessageType('UserAppendSNRequest', (_message.Message,), {
+  'DESCRIPTOR' : _USERAPPENDSNREQUEST,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:UserAppendSNRequest)
+  })
+_sym_db.RegisterMessage(UserAppendSNRequest)
+
+UserAppendResponse = _reflection.GeneratedProtocolMessageType('UserAppendResponse', (_message.Message,), {
+  'DESCRIPTOR' : _USERAPPENDRESPONSE,
+  '__module__' : 'auth_pb2'
+  # @@protoc_insertion_point(class_scope:UserAppendResponse)
+  })
+_sym_db.RegisterMessage(UserAppendResponse)
+
 UserUpdatePasswordRequest = _reflection.GeneratedProtocolMessageType('UserUpdatePasswordRequest', (_message.Message,), {
   'DESCRIPTOR' : _USERUPDATEPASSWORDREQUEST,
   '__module__' : 'auth_pb2'
@@ -1237,8 +1338,8 @@ _AUTH = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1712,
-  serialized_end=1981,
+  serialized_start=1854,
+  serialized_end=2123,
   methods=[
   _descriptor.MethodDescriptor(
     name='Login',
@@ -1303,8 +1404,8 @@ _USER = _descriptor.ServiceDescriptor(
   index=1,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1984,
-  serialized_end=2393,
+  serialized_start=2126,
+  serialized_end=2590,
   methods=[
   _descriptor.MethodDescriptor(
     name='Get',
@@ -1383,6 +1484,16 @@ _USER = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_USERDELETESN,
     output_type=_USERDELETESNRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='AppendSN',
+    full_name='User.AppendSN',
+    index=8,
+    containing_service=None,
+    input_type=_USERAPPENDSNREQUEST,
+    output_type=_USERAPPENDRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

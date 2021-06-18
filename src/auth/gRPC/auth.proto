@@ -119,6 +119,15 @@ message UserDeleteSN {
 message UserDeleteSNResponse{
 }
 
+message UserAppendSNRequest {
+    string access_token = 1;
+    string user_agent = 2;
+    string social_id = 3;
+    string social_name = 4;
+}
+
+message UserAppendResponse {
+}
 
 message UserUpdatePasswordRequest {
     string old_password = 1;
@@ -159,4 +168,5 @@ service User {
     rpc UpdatePassword (UserUpdatePasswordRequest) returns (UserResponse);
     rpc DeleteMe (UserDeleteMe) returns (UserResponse);
     rpc DeleteSN (UserDeleteSN) returns (UserDeleteSNResponse);
+    rpc AppendSN (UserAppendSNRequest) returns (UserAppendResponse);
 }

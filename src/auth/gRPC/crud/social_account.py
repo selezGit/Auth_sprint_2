@@ -11,7 +11,7 @@ class CRUDSocialAccount(CRUDBase):
         return db.query(SocialAccount.user_id).filter(SocialAccount.social_id == social_id,
                                                       SocialAccount.social_name == social_name).first()
 
-    def get_count_social_ids(self, db: Session, uuid: str) -> int:
-        return db.query(SocialAccount).filter(SocialAccount.id==uuid).count()
+    def get_count_social_ids(self, db: Session, user_id: str) -> int:
+        return db.query(SocialAccount).filter(SocialAccount.user_id==user_id).count()
 
 social_account = CRUDSocialAccount()

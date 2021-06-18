@@ -10,7 +10,7 @@ cors = CORS()
 oauth = OAuth()
 
 config = config.get('development')
-
+google = oauth.remote_app(**config.GOOGLE)
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)

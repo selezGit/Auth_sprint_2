@@ -7,7 +7,8 @@ from app.api.v1.proto.auth_pb2 import (UserCreateRequest, UserDeleteMe,
                                        UserGetRequest, UserHistoryRequest,
                                        UserUpdateEmailRequest,
                                        UserUpdatePasswordRequest,
-                                       UserDeleteSN)
+                                       UserDeleteSN,
+                                       UserAppendSNRequest)
 from app.api.v1.proto.connector import ConnectServerGRPC
 from flask import jsonify
 from google.protobuf.json_format import MessageToDict
@@ -78,4 +79,15 @@ def change_email_logic(password: str, email: str,
                                               password=password,
                                               email=email)
     client.UpdateEmail(upate_email_data)
+    return jsonify(status='Success')
+
+@error_handler
+def append_google_SN_logic(access_token: str, user_agent: str,
+                           social_id: str, social_name: str):
+    append_SN_data = UserAppendSNRequest(access_token=access_token,
+                                         user_agent=user_agent,
+                                         social_id=social_id,
+                                         social_name=social_name)
+    client.AppendSN(append_SN_data)
+
     return jsonify(status='Success')

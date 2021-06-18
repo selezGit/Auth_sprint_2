@@ -1,19 +1,15 @@
 from http import HTTPStatus
 
-from flask_restx.inputs import email
-
-from app import config, oauth
+from app import google
 from app.api.v1.models.request_model import auth_login_parser
 from app.api.v1.models.response_model import auth_login_model
-from app.api.v1.services.auth import (login_logic, logout_logic, refresh_logic,
-                                      test_logic, login_via_google_logic)
-from flask import jsonify, request, session, url_for
+from app.api.v1.services.auth import (login_logic, login_via_google_logic,
+                                      logout_logic, refresh_logic, test_logic)
+from flask import request, session, url_for
 from flask_restx import Namespace, Resource
 
 auth_ns = Namespace(name='auth', validate=True)
 auth_ns.models[auth_login_model.name] = auth_login_model
-
-google = oauth.remote_app(**config.GOOGLE)
 
 
 @auth_ns.route('/login', endpoint='auth_login')
