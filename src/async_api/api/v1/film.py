@@ -27,6 +27,7 @@ class FilmView(BaseView):
         genre: Optional[UUID4] = None,
         size: Optional[int] = Query(50, gt=0, le=10000),
         page: Optional[int] = Query(1, gt=0, le=100),
+        adult_content: bool = False,
         query: Optional[str] = None,
         request: Request = None,
         film_service: FilmService = Depends(get_film_service),
@@ -36,7 +37,7 @@ class FilmView(BaseView):
         есть возможность фильтровать фильмы по id жанров"""
         if token_validation:
             films = await film_service.get_by_param(
-                url=str(request.url), order=order, genre=genre, page=page, size=size, query=query
+                url=str(request.url), order=order, genre=genre, page=page, size=size, query=query, adult_content=adult_content
             )
 
             if not films:
@@ -54,13 +55,14 @@ class FilmView(BaseView):
     async def get_details(
         film_id: UUID4,
         request: Request = None,
+        adult_content: bool = False,
         film_service: FilmService = Depends(get_film_service),
         token_validation: bool = Depends(check_token)
 
     ) -> Film:
         """Возвращает информацию по одному фильму"""
         if token_validation:
-            film = await film_service.get_by_id(url=str(request.url), id=film_id)
+            film = await film_service.get_by_id(url=str(request.url), id=film_id, adult_content=adult_content)
             if not film:
                 raise HTTPException(
                     status_code=HTTPStatus.NOT_FOUND, detail="film not found"

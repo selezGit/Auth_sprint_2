@@ -49,6 +49,9 @@ export ELASTIC_HOST=localhost:9200
 export FASTAPI_HOST=http://localhost:8000
 export REDIS_HOST=localhost
 export REDIS_PORT=6379
+export AUTH_HOST=http://localhost:5000
+export AUTH_REDIS_HOST=localhost
+export AUTH_REDIS_PORT=6380
 ```
 
 А так же установить все необходимые библиотеки на локальную машину:
