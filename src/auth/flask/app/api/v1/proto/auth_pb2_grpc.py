@@ -5,7 +5,6 @@ import grpc
 import app.api.v1.proto.auth_pb2 as auth__pb2
 
 
-
 class AuthStub(object):
     """Missing associated documentation comment in .proto file."""
 

@@ -83,10 +83,12 @@ class AppendSN(Resource):
         user_agent = request.headers.get('User-Agent')
         userinfo = google.get('userinfo')
         social_id = userinfo.data.get('id')
+        email = userinfo.data.get('email')
         return append_google_SN_logic(access_token=access_token,
                                       social_id=str(social_id),
                                       social_name='google',
-                                      user_agent=user_agent)
+                                      user_agent=user_agent,
+                                      email=email)
 
     @google.tokengetter
     def get_google_oauth_token():

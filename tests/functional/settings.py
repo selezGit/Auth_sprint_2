@@ -25,5 +25,8 @@ class TestSettings(BaseSettings):
     redis_host: str = Field('redis', env='REDIS_HOST')
     redis_port: str = Field('6379', env='REDIS_PORT')
 
+    auth_host: str = Field('http://auth_api:5000', env='AUTH_HOST')
+    auth_redis_host: str = Field('redis-auth', env='AUTH_REDIS_HOST')
+    auth_redis_port: str = Field('6380', env='AUTH_REDIS_PORT')
 
 SETTINGS = TestSettings()

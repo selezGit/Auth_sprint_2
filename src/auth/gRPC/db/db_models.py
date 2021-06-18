@@ -75,9 +75,10 @@ class SocialAccount(Base):
     user = relationship(User, backref=backref('social_accounts', lazy=True))
 
     social_id = Column(Text, nullable=False)
-    social_name = Column(Text, nullable=False) # google
+    social_name = Column(Text, nullable=False)
+    email = Column(String(255), nullable=False)
 
-    __table_args__ = (UniqueConstraint('social_id', 'social_name', name='social_pk'), )
+    __table_args__ = (UniqueConstraint('social_id', 'social_name', 'email', name='social_pk'), )
     
     def __repr__(self):
         return f'<SocialAccount {self.social_name}:{self.user_id}>' 
