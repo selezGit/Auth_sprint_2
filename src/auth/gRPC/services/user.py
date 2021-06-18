@@ -87,13 +87,9 @@ class UserService(auth_pb2_grpc.UserServicer):
             return UserResponse()
         user = crud.user.get_by(db=db, id=payload['user_id'])
         roles = [RoleResponse(id=role.id, name=role.name) for role in user.roles]
-        user_socials = crud.social_account.get_social(
-            db=db, user_id=payload['user_id'])
-        return UserResponse(id=str(user.id), login=user.login, email=user.email, roles=roles)
-        user_socials = crud.social_account.get_social(
-            db=db, user_id=payload['user_id'])
-        return UserResponse(id=str(user.id), login=user.login, email=user.email,
-                            social_networks=[{'id': str(social.id), 'social_name': social.social_name, 'email': social.email} for social in user_socials])
+        user_socials = [{'id': str(social.id), 'social_name': social.social_name, 'email': social.email} for social in user.social_account]
+
+        return UserResponse(id=str(user.id), login=user.login, email=user.email, roles=roles, social_networks=user_socials)
 
     def GetHistory(self, request: UserHistoryRequest, context):
         db = next(get_db())
