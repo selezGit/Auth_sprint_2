@@ -10,6 +10,7 @@ class LocalException(Exception):
         grpc.StatusCode.NOT_FOUND: HTTPStatus.NOT_FOUND,
         grpc.StatusCode.INVALID_ARGUMENT: HTTPStatus.BAD_REQUEST,
         grpc.StatusCode.UNAUTHENTICATED: HTTPStatus.UNAUTHORIZED,
+        grpc.StatusCode.PERMISSION_DENIED: HTTPStatus.FORBIDDEN,
         grpc.StatusCode.UNKNOWN: HTTPStatus.SERVICE_UNAVAILABLE,
         grpc.StatusCode.ALREADY_EXISTS: HTTPStatus.CONFLICT
     }

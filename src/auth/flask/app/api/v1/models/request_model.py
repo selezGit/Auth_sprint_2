@@ -21,3 +21,9 @@ change_email_parser.add_argument(name='email', type=email(check=True), location=
 delete_sn_parser = RequestParser(bundle_errors=True)
 delete_sn_parser.add_argument(name='uuid', type=str, location='form', required=True, nullable=False, help='uuid социальной сети')
 
+role_parser = RequestParser(bundle_errors=True)
+role_parser.add_argument(name='user_id', type=str, location='form', required=True, nullable=False, help='id пользователя')
+role_parser.add_argument(name='role_id', type=int, location='form', required=True, nullable=False, help='id роли')
+
+create_role_parser = RequestParser(bundle_errors=True)
+create_role_parser.add_argument(name='name', type=str, location='form', required=True, nullable=False, help='название роли')

@@ -35,10 +35,6 @@ class RoleService(auth_pb2_grpc.RoleServicer):
             context.set_code(grpc.StatusCode.UNAUTHENTICATED)
             context.set_details('user_agent not valid for this token!')
             return RoleResponse()
-        if not 'admin' in payload['role']:
-            context.set_code(grpc.StatusCode.PERMISSION_DENIED)
-            context.set_details('user is not admin')
-            return RoleResponse()
         db = next(get_db())
         roles_db = crud.role.get_all(db=db, skip=skip, limit=limit)
         rows = [RoleResponse(id=role.id, name=role.name) for role in roles_db]

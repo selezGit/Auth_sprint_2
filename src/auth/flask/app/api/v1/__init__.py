@@ -1,8 +1,9 @@
 from app.api.v1.views.auth import auth_ns
+from app.api.v1.views.role import role_ns
 from app.api.v1.views.user import user_ns
 from flask import Blueprint
 from flask_restx import Api
-from app import config
+
 api_bp = Blueprint('api', __name__, url_prefix='/api/v1')
 
 authorizations = {
@@ -26,3 +27,4 @@ api = Api(
 
 api.add_namespace(auth_ns, path='/auth')
 api.add_namespace(user_ns, path='/user')
+api.add_namespace(role_ns, path='/role')

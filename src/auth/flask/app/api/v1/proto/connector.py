@@ -1,5 +1,5 @@
 import grpc
-from app.api.v1.proto.auth_pb2_grpc import AuthStub, UserStub
+from app.api.v1.proto.auth_pb2_grpc import AuthStub, UserStub, RoleStub
 
 
 
@@ -10,3 +10,6 @@ class ConnectServerGRPC:
 
     def conn_user(self):
         return UserStub(self.channel)
+    
+    def conn_role(self):
+        return RoleStub(self.channel)
