@@ -3,6 +3,7 @@ from concurrent import futures
 import grpc
 
 from db.db import init_db
+from db.pre_start_load import init_data
 
 from services.user import UserService
 from services.auth import AuthService
@@ -25,4 +26,5 @@ def serve():
 
 if __name__ == '__main__':
     init_db()
+    init_data()
     serve()
