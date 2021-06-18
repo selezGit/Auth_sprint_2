@@ -48,6 +48,12 @@
       "imdb_rating": {
         "type": "float"
       },
+      "is_adult": {
+        "type": "boolean"
+      },
+      "is_premium": {
+        "type": "boolean"
+      },
       "title": {
         "type": "text",
         "analyzer": "ru_en",

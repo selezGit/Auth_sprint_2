@@ -44,8 +44,8 @@ CREATE TABLE content.film_work (
     file_path character varying(100),
     rating double precision,
     type_id uuid,
-    is_adult boolean NOT NULL,
-    is_premium boolean NOT NULL
+    is_adult boolean NOT NULL DEFAULT false,
+    is_premium boolean NOT NULL DEFAULT false
 );
 
 

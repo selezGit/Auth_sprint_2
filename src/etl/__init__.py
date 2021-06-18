@@ -402,6 +402,8 @@ class ETLProcessFilmWork(ETLProcess):
                     fw.title,
                     fw.description,
                     fw.rating,
+                    fw.is_adult as is_adult,
+                    fw.is_premium as is_premium,
                     fwt.name,
                     fwp.persons,
                     fwg.genres
@@ -461,7 +463,7 @@ class ETLProcessFilmWork(ETLProcess):
 
                 film_work_doc = {
                     k: v for k, v in film.items()
-                    if k in ('id', 'title', 'description', 'type')
+                    if k in ('id', 'title', 'description', 'type', 'is_adult', 'is_premium')
                 }
                 film_work_doc['genres_names'] = [g['name']
                                                  for g in film['genres']]
