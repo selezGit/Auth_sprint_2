@@ -77,6 +77,7 @@ message UserResponse {
     string id = 1;
     string login = 2;
     string email = 3;
+    repeated RoleResponse roles = 4;
 }
 
 message UserGetRequest {
@@ -138,6 +139,53 @@ message UserHistoryResponse {
     repeated UserHistory rows = 2;
 }
 
+message UserAddRole{
+    string access_token = 1;
+    string user_agent = 2;
+    string user_id = 3;
+    int32 role_id = 4;
+}
+
+message UserRemoveRole {
+    string access_token = 1;
+    string user_agent = 2;
+    string user_id = 3;
+    int32 role_id = 4;
+}
+
+message RoleCreate {
+    string access_token = 1;
+    string user_agent = 2;
+    string name = 3;
+}
+
+message RoleRemove {
+    string access_token = 1;
+    string user_agent = 2;
+    int32 role_id = 3;
+}
+message RoleUpdate {
+    string access_token = 1;
+    string user_agent = 2;
+    int32 role_id = 3;
+    string name = 4;
+}
+message RoleResponse {
+    int32 id = 1;
+    string name = 2;
+}
+message RoleGetList {
+    string access_token = 1;
+    int32 skip = 2;
+    int32 limit = 3;
+    string user_agent = 4;
+}
+message RoleResponseList {
+    repeated RoleResponse rows = 1;
+}
+
+
+
 
 
 service User {
@@ -148,4 +196,13 @@ service User {
     rpc UpdateEmail (UserUpdateEmailRequest) returns (UserResponse);
     rpc UpdatePassword (UserUpdatePasswordRequest) returns (UserResponse);
     rpc DeleteMe (UserDeleteMe) returns (UserResponse);
+    rpc addRole (UserAddRole) returns (UserResponse);
+    rpc removeRole (UserRemoveRole) returns (UserResponse);
+}
+
+service Role {
+    rpc Get (RoleGetList) returns (RoleResponseList);
+    rpc Create (RoleCreate) returns (RoleResponse);
+    rpc Delete (RoleRemove) returns (RoleResponse);
+    rpc Update (RoleUpdate) returns (RoleResponse);
 }
