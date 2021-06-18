@@ -79,10 +79,11 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             context.set_code(grpc.StatusCode.UNAUTHENTICATED)
             context.set_details(f'password not valid!')
             return LoginResponse()
-
+        role = [role.name for role in user.roles]
         payload = {
             'user_id': str(user.id),
-            'agent': request.user_agent
+            'agent': request.user_agent,
+            'role': role
         }
         refresh_delta = timedelta(days=7)
 
@@ -121,6 +122,8 @@ class AuthService(auth_pb2_grpc.AuthServicer):
     def RefreshToken(self, request: RefreshTokenRequest, context):
         user_agent = request.user_agent
         refresh_token = request.refresh_token
+        db = next(get_db())
+
         if refresh_token is None:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details('refresh_token field required!')
@@ -149,6 +152,11 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details('Invalid refresh token!')
             return RefreshTokenResponse()
+        user = crud.user.get(db=db, id=payload['user_id'])
+        if user is None:
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            context.set_details(f'user not found!')
+            return LoginResponse()
 
         check_refresh = redis_method.get_auth_user(
             payload['user_id'], user_agent=request.user_agent).decode()
@@ -158,14 +166,17 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             return RefreshTokenResponse()
         redis_method.del_refresh_token(refresh_token=refresh_token)
         refresh_delta = timedelta(days=7)
-        payload = {
+        role = [role.name for role in user.roles]
+
+        payload_new = {
             'user_id': payload['user_id'],
-            'agent': request.user_agent
+            'agent': request.user_agent,
+            'role': role
         }
-        _, expire_access, access_token = create_access_token(payload=payload)
-        payload['access_token'] = access_token
+        _, expire_access, access_token = create_access_token(payload=payload_new)
+        payload_new['access_token'] = access_token
         _, _, refresh_token = create_refresh_token(
-            payload=payload, time=refresh_delta)
+            payload=payload_new, time=refresh_delta)
 
         redis_method.add_refresh_token(refresh_token, exp=refresh_delta)
         redis_method.add_auth_user(
@@ -250,7 +261,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
                                                         social_name=request.social_name)
         if user_id:
             user_id = user_id[0]
-            
+
         if user_id is None:
             try:
                 user = crud.user.create_social_account(
@@ -271,12 +282,12 @@ class AuthService(auth_pb2_grpc.AuthServicer):
                 context.set_code(grpc.StatusCode.WARNING)
                 context.set_details()
                 return LoginViaGoogleResponse()
-        
+
         user = crud.user.get_by(db=db, id=user_id)
         payload = {
-                    'user_id': str(user.id),
-                    'agent': request.user_agent
-                }
+            'user_id': str(user.id),
+            'agent': request.user_agent
+        }
         refresh_delta = timedelta(days=7)
 
         _, expire_access, access_token = create_access_token(payload=payload)
@@ -306,7 +317,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
                                    exp=refresh_delta)
 
         response = LoginViaGoogleResponse(access_token=access_token, refresh_token=refresh_token,
-                                 expires_in=str(expire_access),
-                                 token_type='Bearer')
+                                          expires_in=str(expire_access),
+                                          token_type='Bearer')
 
         return response
