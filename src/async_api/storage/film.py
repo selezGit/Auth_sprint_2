@@ -12,12 +12,12 @@ import logging
 class FilmBaseStorage(BaseStorage):
     @abc.abstractmethod
     async def get_multi(
-        self, page: int, size: int, q: str = None, order: str = None, genre: str = None
+        self, page: int, size: int, q: str = None, order: str = None, genre: str = None, adult_content: bool = False
     ) -> List[Optional[Dict]]:
         pass
 
     @abc.abstractmethod
-    async def get(self, id: str) -> Optional[Dict]:
+    async def get(self, id: str, adult_content: bool = False) -> Optional[Dict]:
         pass
 
     @abc.abstractmethod
@@ -33,7 +33,7 @@ class FilmElasticStorage(FilmBaseStorage):
 
     @backoff.on_exception(backoff.expo, Exception)
     async def get_multi(
-        self, page: int, size: int, q: str = None, order: str = None, genre: str = None
+        self, page: int, size: int, q: str = None, order: str = None, genre: str = None, adult_content: bool = False
     ) -> List[Optional[Dict]]:
 
         query = {"size": size, "from": (page - 1) * size}
@@ -88,7 +88,7 @@ class FilmElasticStorage(FilmBaseStorage):
         return [film["_source"] for film in result]
 
     @backoff.on_exception(backoff.expo, Exception)
-    async def get(self, id: str) -> Optional[Dict]:
+    async def get(self, id: str, adult_content: bool = False) -> Optional[Dict]:
         try:
             result = await self.elastic.get("movies", id)
             return result["_source"]
