@@ -13,9 +13,6 @@ from utils.bulk_helper import delete_doc, generate_doc
 from utils.wait_for_es import wait_es
 from utils.wait_for_redis import wait_redis
 
-SERVICE_URL = 'http://127.0.0.1:8000'
-
-
 @pytest.fixture(scope='function')
 async def es_client():
     await wait_es()
@@ -43,7 +40,6 @@ async def redis_client():
 async def make_get_request(session, redis_client):
     async def inner(method: str, params: dict = None, cleaning_redis: bool = True) -> HTTPResponse:
         params = params or {}
-        # в боевых системах старайтесь так не делать!
         url = SETTINGS.back_host + '/api/v1' + method
         start = time.time()
         async with session.get(url, params=params) as response:

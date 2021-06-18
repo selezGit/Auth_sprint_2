@@ -84,9 +84,10 @@ def change_email_logic(email: str,
 
 
 @error_handler
-def append_google_SN_logic(access_token: str, user_agent: str,
+def append_google_SN_logic(email: str, access_token: str, user_agent: str,
                            social_id: str, social_name: str):
-    append_SN_data = UserAppendSNRequest(access_token=access_token,
+    append_SN_data = UserAppendSNRequest(email=email,
+                                         access_token=access_token,
                                          user_agent=user_agent,
                                          social_id=social_id,
                                          social_name=social_name)

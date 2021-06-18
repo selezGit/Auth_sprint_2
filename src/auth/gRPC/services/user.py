@@ -88,7 +88,7 @@ class UserService(auth_pb2_grpc.UserServicer):
         user_socials = crud.social_account.get_social(
             db=db, user_id=payload['user_id'])
         return UserResponse(id=str(user.id), login=user.login, email=user.email,
-                            social_networks=[{'id': str(social.id), 'social_name': social.social_name} for social in user_socials])
+                            social_networks=[{'id': str(social.id), 'social_name': social.social_name, 'email': social.email} for social in user_socials])
 
     def GetHistory(self, request: UserHistoryRequest, context):
         db = next(get_db())
@@ -380,6 +380,7 @@ class UserService(auth_pb2_grpc.UserServicer):
         social_name = request.social_name
         access_token = request.access_token
         user_agent = request.user_agent
+        email = request.email
 
         if social_id is None:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
@@ -396,6 +397,10 @@ class UserService(auth_pb2_grpc.UserServicer):
         if access_token is None:
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details('access_token field required!')
+            return UserAppendResponse()
+        if email is None:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details('email field required!')
             return UserAppendResponse()
         try:
             logger.info(access_token)
@@ -430,7 +435,8 @@ class UserService(auth_pb2_grpc.UserServicer):
             social = crud.social_account.create(db=db, obj_in={
                 'user_id': payload['user_id'],
                 'social_id': social_id,
-                'social_name': social_name
+                'social_name': social_name,
+                'email': email
             })
 
         except IntegrityError as e:

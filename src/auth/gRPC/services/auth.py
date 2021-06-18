@@ -254,7 +254,8 @@ class AuthService(auth_pb2_grpc.AuthServicer):
                 social = crud.social_account.create(db=db, obj_in={
                     'user_id': user.id,
                     'social_id': request.social_id,
-                    'social_name': request.social_name
+                    'social_name': request.social_name,
+                    'email': request.email
                 })
                 user_id = user.id
             except IntegrityError as e:
