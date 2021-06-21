@@ -193,8 +193,8 @@ class History(Resource):
     @user_ns.response(int(HTTPStatus.TOO_MANY_REQUESTS), 'Too many requests')
     @user_ns.response(int(HTTPStatus.SERVICE_UNAVAILABLE), 'Internal server error.')
     def get(self):
-        skip = int(request.args.get('skip'))
-        limit = int(request.args.get('limit'))
+        skip = int(request.args.get('skip', 0))
+        limit = int(request.args.get('limit', 50))
         access_token = request.headers.get('Authorization')
         user_agent = request.headers.get('User-Agent')
         return history_logic(skip=skip, limit=limit, access_token=access_token, user_agent=user_agent)

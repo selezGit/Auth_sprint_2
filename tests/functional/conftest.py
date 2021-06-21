@@ -13,6 +13,8 @@ from utils.bulk_helper import delete_doc, generate_doc
 from utils.wait_for_es import wait_es
 from utils.wait_for_redis import wait_redis
 
+
+
 @pytest.fixture(scope='function')
 async def es_client():
     await wait_es()
@@ -35,6 +37,7 @@ async def redis_client():
     yield client
     client.close()
 
+
 @pytest.fixture(scope='function')
 async def auth_redis_client():
     await wait_redis()
@@ -44,12 +47,15 @@ async def auth_redis_client():
 
 
 @pytest.fixture
-async def make_get_request(session, redis_client):
-    async def inner(method: str, params: dict = None, cleaning_redis: bool = True) -> HTTPResponse:
+async def make_get_request(session, redis_client, get_authorization):
+    async def inner(method: str, params: dict = None, cleaning_redis: bool = True, authorization: bool = False) -> HTTPResponse:
+        headers = SETTINGS.headers
+        if authorization:
+            headers['Authorization'] = get_authorization
         params = params or {}
         url = SETTINGS.back_host + '/api/v1' + method
         start = time.time()
-        async with session.get(url, params=params) as response:
+        async with session.get(url, params=params, headers=headers) as response:
             #  очищаем кэш redis
             if cleaning_redis:
                 await redis_client.delete(str(response.url))
@@ -63,18 +69,21 @@ async def make_get_request(session, redis_client):
 
     return inner
 
+
 @pytest.fixture
-async def make_auth_get_request(session, auth_redis_client):
-    async def inner(type: str, method: str, params: dict = None, cleaning_redis: bool = True, data: Dict = None) -> HTTPResponse:
+async def make_auth_get_request(session, get_authorization):
+    async def inner(type: str, method: str, params: dict = None, data: dict = None, authorization: bool = False) -> HTTPResponse:
+        headers = SETTINGS.headers
+        if authorization:
+            headers['Authorization'] = get_authorization
+
         params = params or {}
         url = SETTINGS.auth_host + '/api/v1' + method
         start = time.time()
-        if type == 'get':
-            async with session.get(url, params=params) as response:
-                #  очищаем кэш redis
-                if cleaning_redis:
-                    await auth_redis_client.delete(str(response.url))
 
+        if type == 'get':
+            print(params)
+            async with session.get(url, params=params, headers=headers) as response:
                 return HTTPResponse(
                     body=await response.json(),
                     headers=response.headers,
@@ -82,11 +91,8 @@ async def make_auth_get_request(session, auth_redis_client):
                     url=response.url,
                     resp_speed=(time.time()-start))
         elif type == 'post':
-            async with session.post(url, params=params, data=data) as response:
-                #  очищаем кэш redis
-                if cleaning_redis:
-                    await auth_redis_client.delete(str(response.url))
-
+            async with session.post(url, params=params, data=data, headers=headers) as response:
+                print(response.text)
                 return HTTPResponse(
                     body=await response.json(),
                     headers=response.headers,
@@ -94,11 +100,7 @@ async def make_auth_get_request(session, auth_redis_client):
                     url=response.url,
                     resp_speed=(time.time() - start))
         elif type == 'patch':
-            async with session.patch(url, params=params, data=data) as response:
-                #  очищаем кэш redis
-                if cleaning_redis:
-                    await auth_redis_client.delete(str(response.url))
-
+            async with session.patch(url, params=params, data=data, headers=headers) as response:
                 return HTTPResponse(
                     body=await response.json(),
                     headers=response.headers,
@@ -106,11 +108,7 @@ async def make_auth_get_request(session, auth_redis_client):
                     url=response.url,
                     resp_speed=(time.time() - start))
         elif type == 'delete':
-            async with session.delete(url, params=params) as response:
-                #  очищаем кэш redis
-                if cleaning_redis:
-                    await auth_redis_client.delete(str(response.url))
-
+            async with session.delete(url, params=params, headers=headers) as response:
                 return HTTPResponse(
                     body=await response.json(),
                     headers=response.headers,
@@ -119,6 +117,16 @@ async def make_auth_get_request(session, auth_redis_client):
                     resp_speed=(time.time() - start))
     return inner
 
+
+@pytest.fixture(scope='function')
+async def get_authorization(session):
+    url = SETTINGS.auth_host + '/api/v1/auth/login'
+    data = {'login': 'test_user',
+            'password': '1'}
+        
+    async with session.post(url, data=data, headers=SETTINGS.headers) as response:
+        body=await response.json()
+        yield body.get('accessToken')
 
 
 @pytest.fixture(scope='function')

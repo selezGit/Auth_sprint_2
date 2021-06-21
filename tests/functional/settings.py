@@ -28,5 +28,9 @@ class TestSettings(BaseSettings):
     auth_host: str = Field('http://auth_api:5000', env='AUTH_HOST')
     auth_redis_host: str = Field('redis-auth', env='AUTH_REDIS_HOST')
     auth_redis_port: str = Field('6380', env='AUTH_REDIS_PORT')
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36',
+        'accept': 'application/json'}
+
 
 SETTINGS = TestSettings()
