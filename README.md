@@ -38,7 +38,11 @@ https://app.swaggerhub.com/apis/seleswagger/PRACTIX/1.0.0#/
 
     sudo docker-compose -f docker-compose-auth.yml up -d --build
 
-авторизоваться из под админа можно так -
+Всё вместе:
+
+    sudo docker-compose -f docker-compose-async_api.yml -f docker-compose-auth.yml up -d --build
+
+авторизоваться из под админа можно так:
 - login: admin
 - password: 1
 
