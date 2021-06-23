@@ -2,19 +2,6 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def test_user_create(make_auth_get_request):
-    data = {'login': 'test_user',
-            'email': 'test@gmail.com',
-            'password': '1'}
-
-    response = await make_auth_get_request('post', '/user/', data=data)
-
-    assert response.status == 201
-
-
-
-
-@pytest.mark.asyncio
 async def test_user_history(make_auth_get_request):
 
     response = await make_auth_get_request(type='get', method='/user/history', authorization=True)
@@ -47,11 +34,3 @@ async def test_user_change_password(make_auth_get_request):
 
     assert response.status == 200
     assert response.body['status'] == 'Success'
-
-@pytest.mark.asyncio
-async def test_user_delete(make_auth_get_request):
-
-    response = await make_auth_get_request(type='delete', method='/user/', authorization=True)
-
-    assert response.status == 200
-    assert response.body['message'] == 'user successfully deleted'

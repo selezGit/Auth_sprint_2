@@ -18,4 +18,5 @@ def init_data():
     user = crud.user.get_by(db=db, login='admin')
     if user is None:
         data = {'login': 'admin', 'email': 'admin@gmail.com', 'password': '1'}
-        crud.user.create(db=db, obj_in=data)
+        role = crud.role.get_by(db=db, name='admin')
+        crud.user.create(db=db, obj_in=data, role=role)

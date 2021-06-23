@@ -5,7 +5,9 @@ from core.config import settings
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-engine = create_engine(settings.PG_CONNECT)
+
+engine = create_engine(settings.PG_CONNECT,
+                       pool_pre_ping=True, pool_size=32, max_overflow=64)
 SessionLocal = sessionmaker(autocommit=False,
                             autoflush=False,
                             bind=engine)
@@ -22,8 +24,7 @@ def init_db():
 
 def get_db() -> Generator:
     try:
-        db = SessionLocal()
-        yield db
+        yield SessionLocal()
     finally:
         db.close()
 
