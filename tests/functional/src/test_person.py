@@ -46,7 +46,9 @@ async def test_get_films_by_peson_id(prepare_es_person, prepare_es_film, make_ge
     film = prepare_es_film[0]
     short_film = {'id': film.get('id'),
                   'title': film.get('title'),
-                  'imdb_rating': film.get('imdb_rating')}
+                  'imdb_rating': film.get('imdb_rating'),
+                  'is_adult': False,
+                  'is_premium': False}
 
     response = await make_get_request('/person/7f489c61-1a21-43d2-a3ad-3d900f8a9b5e/films')
 
@@ -55,30 +57,30 @@ async def test_get_films_by_peson_id(prepare_es_person, prepare_es_film, make_ge
     assert response.body[0] == short_film
 
 
+@pytest.mark.parametrize('test_input,expected,error',
+                         [({'method': '/person'}, 200,
+                          'empty parametr validator, status must be 200'),
+                          ({'method': '/person/wrong-uuid'}, 422,
+                           'wrong uuid validator, status must be 422'),
+                             ({'method': '/person', 'params': {'page': 101}}, 422,
+                              'too large page validator, status must be 422'),
+                             ({'method': '/person', 'params': {'page': 0}}, 422,
+                              'too small page validator, status must be 422'),
+                             ({'method': '/person', 'params': {'size': 10001}}, 422,
+                              'too large size validator, status must be 422'),
+                             ({'method': '/person', 'params': {'size': 0}}, 422,
+                              'too small size validator, status must be 422'),
+                             ({'method': '/person', 'params': {'query': 'PersonNonExists'}}, 404,
+                              'search non-existent person validator, status must be 404')])
 @pytest.mark.asyncio
-async def test_validator(make_get_request):
+async def test_validator(make_get_request, test_input, expected, error):
     """Тест корректной валидации форм"""
+    response = await make_get_request(**test_input)
+    assert response.status == expected, error
 
-    response = await make_get_request('/person')
-    assert response.status == 200, 'empty parametr validator, status must be 200'
 
-    response = await make_get_request('/person/wrong-uuid')
-    assert response.status == 422, 'wrong uuid validator, status must be 422'
-
-    response = await make_get_request('/person', {'page': 101})
-    assert response.status == 422, 'too large page validator, status must be 422'
-
-    response = await make_get_request('/person', {'page': 0})
-    assert response.status == 422, 'too small page validator, status must be 422'
-
-    response = await make_get_request('/person', {'size': 10001})
-    assert response.status == 422, 'too large size validator, status must be 422'
-
-    response = await make_get_request('/person', {'size': 0})
-    assert response.status == 422, 'too small size validator, status must be 422'
-
-    response = await make_get_request('/person', {'query': 'PersonNonExists'})
-    assert response.status == 404, 'search non-existent person validator, status must be 404'
+@pytest.mark.asyncio
+async def test_speed(make_get_request):
 
     # этот запрос сделан без удаления кэша
     response = await make_get_request('/person', {'page': 1, 'size': 10000}, False)

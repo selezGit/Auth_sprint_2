@@ -1,6 +1,6 @@
 import asyncio
 import time
-from typing import Any, Dict
+from typing import Any
 
 import aiohttp
 import aioredis
@@ -14,20 +14,12 @@ from utils.wait_for_es import wait_es
 from utils.wait_for_redis import wait_redis
 
 
-
 @pytest.fixture(scope='function')
 async def es_client():
     await wait_es()
     client = AsyncElasticsearch(hosts=[SETTINGS.es_host, ])
     yield client
     await client.close()
-
-
-@pytest.fixture(scope='function')
-async def session():
-    async with aiohttp.ClientSession() as session:
-        yield session
-    await session.close()
 
 
 @pytest.fixture(scope='function')
@@ -39,23 +31,45 @@ async def redis_client():
 
 
 @pytest.fixture(scope='function')
-async def auth_redis_client():
-    await wait_redis()
-    client = await aioredis.create_redis_pool((SETTINGS.auth_redis_host, SETTINGS.auth_redis_port), minsize=10, maxsize=20)
-    yield client
-    client.close()
+async def session():
+    async with aiohttp.ClientSession() as session:
+        yield session
+    await session.close()
+
+
+@pytest.fixture(scope='session', autouse=True)
+async def create_test_user():
+    url = SETTINGS.auth_host + '/api/v1/user/'
+    data = {
+        'login': 'test_user',
+        'email': 'testuser@mail.ru',
+        'password': '1'
+    }
+    headers = SETTINGS.headers
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, data=data, headers=headers) as response:
+            logger.info('\nuser is created')
+
+    yield
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(SETTINGS.auth_host + '/api/v1/auth/login', data=data, headers=headers) as response:
+            body = await response.json()
+            headers['Authorization'] = body.get('accessToken')
+
+        async with session.delete(url, data=data, headers=headers) as response:
+            logger.info('\nuser is deleted')
 
 
 @pytest.fixture
 async def make_get_request(session, redis_client, get_authorization):
-    async def inner(method: str, params: dict = None, cleaning_redis: bool = True, authorization: bool = False) -> HTTPResponse:
+    async def inner(method: str, params: dict = None, cleaning_redis: bool = True) -> HTTPResponse:
         headers = SETTINGS.headers
-        if authorization:
-            headers['Authorization'] = get_authorization
+        headers['Authorization'] = f'Bearer {get_authorization}'
         params = params or {}
         url = SETTINGS.back_host + '/api/v1' + method
         start = time.time()
-        async with session.get(url, params=params, headers=headers) as response:
+        async with session.get(url, params=params, headers=headers, ) as response:
             #  очищаем кэш redis
             if cleaning_redis:
                 await redis_client.delete(str(response.url))
@@ -82,7 +96,6 @@ async def make_auth_get_request(session, get_authorization):
         start = time.time()
 
         if type == 'get':
-            print(params)
             async with session.get(url, params=params, headers=headers) as response:
                 return HTTPResponse(
                     body=await response.json(),
@@ -92,7 +105,6 @@ async def make_auth_get_request(session, get_authorization):
                     resp_speed=(time.time()-start))
         elif type == 'post':
             async with session.post(url, params=params, data=data, headers=headers) as response:
-                print(response.text)
                 return HTTPResponse(
                     body=await response.json(),
                     headers=response.headers,
@@ -118,14 +130,14 @@ async def make_auth_get_request(session, get_authorization):
     return inner
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 async def get_authorization(session):
     url = SETTINGS.auth_host + '/api/v1/auth/login'
     data = {'login': 'test_user',
             'password': '1'}
-        
+
     async with session.post(url, data=data, headers=SETTINGS.headers) as response:
-        body=await response.json()
+        body = await response.json()
         yield body.get('accessToken')
 
 
@@ -139,6 +151,8 @@ async def prepare_es_film(es_client):
              'creation_date': '1970-01-01T00:00:00',
              'restriction': 0,
              'directors': [],
+             'is_adult': False,
+             'is_premium': False,
              'actors': [{
                  'id': '7f489c61-1a21-43d2-a3ad-3d900f8a9b5e',
                  'name': 'Test Testovich'
@@ -195,7 +209,7 @@ async def prepare_es_person(es_client):
     logger.info('person is deleted')
 
 
-@pytest.fixture
+@pytest.fixture(scope='function')
 async def get_all_data_elastic(es_client):
     async def inner(index: str) -> Any:
         query = {

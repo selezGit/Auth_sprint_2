@@ -12,7 +12,7 @@ async def test_get_all_films(prepare_es_film, make_get_request, get_all_data_ela
 
     assert response.status == 200
 
-    assert len(response.body) == len(all_films)
+    assert len(response.body) == len(all_films) - 7
 
 
 @pytest.mark.asyncio
@@ -41,33 +41,34 @@ async def test_get_by_id(prepare_es_film, make_get_request):
     assert response.body == prepare_es_film[0]
 
 
+@pytest.mark.parametrize('test_input,expected,error',
+                         [({'method': '/film'}, 200,
+                          'empty parametr validator, status must be 200'),
+                          ({'method': '/film/wrong-uuid'}, 422,
+                           'wrong uuid validator, status must be 422'),
+                             ({'method': '/film', 'params': {'genre': 'wrong-uuid'}}, 422,
+                              'wrong genre uuid validator, status must be 422'),
+                             ({'method': '/film', 'params': {'page': 101}}, 422,
+                              'too large page validator, status must be 422'),
+                             ({'method': '/film', 'params': {'page': 0}}, 422,
+                              'too small page validator, status must be 422'),
+                             ({'method': '/film', 'params': {'size': 10001}}, 422,
+                              'too large size validator, status must be 422'),
+                             ({'method': '/film', 'params': {'size': 0}}, 422,
+                              'too small size validator, status must be 422'),
+                             ({'method': '/film', 'params': {'query': 'MovieNonExists'}}, 404,
+                              'search non-existent movie validator, status must be 404')])
 @pytest.mark.asyncio
-async def test_validator(make_get_request):
+async def test_validator(make_get_request, test_input, expected, error):
     """Тест корректной валидации форм"""
 
-    response = await make_get_request('/film')
-    assert response.status == 200, 'empty parametr validator, status must be 200'
+    response = await make_get_request(**test_input)
+    assert response.status == expected, error
 
-    response = await make_get_request('/film/wrong-uuid')
-    assert response.status == 422, 'wrong uuid validator, status must be 422'
 
-    response = await make_get_request('/film', {'genre': 'wrong-uuid'})
-    assert response.status == 422, 'wrong genre uuid validator, status must be 422'
-
-    response = await make_get_request('/film', {'page': 101})
-    assert response.status == 422, 'too large page validator, status must be 422'
-
-    response = await make_get_request('/film', {'page': 0})
-    assert response.status == 422, 'too small page validator, status must be 422'
-
-    response = await make_get_request('/film', {'size': 10001})
-    assert response.status == 422, 'too large size validator, status must be 422'
-
-    response = await make_get_request('/film', {'size': 0})
-    assert response.status == 422, 'too small size validator, status must be 422'
-
-    response = await make_get_request('/film', {'query': 'MovieNonExists'})
-    assert response.status == 404, 'search non-existent movie validator, status must be 404'
+@pytest.mark.asyncio
+async def test_speed(make_get_request):
+    """Тест на разгоняемый кэш"""
 
     # этот запрос сделан без удаления кэша
     response = await make_get_request('/film', {'page': 1, 'size': 10000}, False)

@@ -3,18 +3,16 @@ import logging
 import aioredis
 import uvicorn as uvicorn
 from elasticsearch import AsyncElasticsearch
-from fastapi import FastAPI, Depends
+from fastapi import Depends, FastAPI
 from fastapi.responses import ORJSONResponse
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
 from fastapi_pagination import add_pagination
 
 from api.v1 import film, genre, person
 from core import config
 from core.logger import LOGGING
 from db import elastic, redis
-
-from fastapi_limiter import FastAPILimiter
-from fastapi_limiter.depends import RateLimiter
-
 
 app = FastAPI(
     title=config.PROJECT_NAME,
@@ -52,9 +50,9 @@ async def shutdown():
 
 # Подключаем роутер к серверу, указав префикс /v1/film
 # Теги указываем для удобства навигации по документации
-app.include_router(film.router, prefix='/api/v1/film', tags=['Фильмы'], dependencies=[Depends(RateLimiter(times=20, seconds=60))])
-app.include_router(genre.router, prefix='/api/v1/genre', tags=['Жанры'], dependencies=[Depends(RateLimiter(times=20, seconds=60))])
-app.include_router(person.router, prefix='/api/v1/person', tags=['Люди'], dependencies=[Depends(RateLimiter(times=20, seconds=60))])
+app.include_router(film.router, prefix='/api/v1/film', tags=['Фильмы'], dependencies=[Depends(RateLimiter(times=60, seconds=60))])
+app.include_router(genre.router, prefix='/api/v1/genre', tags=['Жанры'], dependencies=[Depends(RateLimiter(times=60, seconds=60))])
+app.include_router(person.router, prefix='/api/v1/person', tags=['Люди'], dependencies=[Depends(RateLimiter(times=60, seconds=60))])
 
 if __name__ == '__main__':
     uvicorn.run(

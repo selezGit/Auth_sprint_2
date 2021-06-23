@@ -30,7 +30,10 @@ class TestSettings(BaseSettings):
     auth_redis_port: str = Field('6380', env='AUTH_REDIS_PORT')
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36',
-        'accept': 'application/json'}
+        'accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded'}
 
+    pg_auth_connect: str = Field(
+        'postgresql://auth_admin:1234@db-auth/auth', env='PG_CONNECT')
 
 SETTINGS = TestSettings()

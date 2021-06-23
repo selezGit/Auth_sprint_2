@@ -22,5 +22,5 @@ def create_app():
     app.register_blueprint(api_bp)
     cors.init_app(app)
     oauth.init_app(app)
-    Limiter(app, key_func=get_remote_address, default_limits=["20/minute"])
+    Limiter(app, key_func=get_remote_address, default_limits=["60/minute"])
     return app

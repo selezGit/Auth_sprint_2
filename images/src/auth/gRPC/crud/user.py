@@ -3,6 +3,8 @@ from typing import Any, Dict
 import bcrypt
 from db.db_models import User, Role
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
+
 
 from crud.base import CRUDBase
 from loguru import logger
@@ -27,9 +29,12 @@ class CRUDUser(CRUDBase):
         if role:
             db_obj.roles.append(role)
         db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
+        try:
+            db.commit()
+            db.refresh(db_obj)
+            return db_obj
+        except IntegrityError as e:
+            logger.error(e)
 
     def create_social_account(self, db: Session, *, email: str, role: str = None) -> User:
         db_obj = self.model(email=email)
@@ -69,6 +74,14 @@ class CRUDUser(CRUDBase):
             password_hash = hash_bytes.decode('utf-8')
             obj_in['password_hash'] = password_hash
         return super().update(db=db, db_obj=db_obj, obj_in=obj_in)
+
+    def remove(self,
+               db: Session,
+               *,
+               db_obj: User, ):
+        db_obj.roles.clear()
+        db.delete(db_obj)
+        db.commit()
 
 
 user = CRUDUser()
